@@ -1184,12 +1184,12 @@
 <div class="container">
 
 <header>
-  <div class="eyebrow">Personal Build System · v3.7</div>
+  <div class="eyebrow">Personal Build System · v4.0</div>
   <h1>Mike's AI Projects <span class="italic">Workflow</span></h1>
   <p class="subtitle">A repeatable system for taking a project from <em>idea</em> to <em>production</em> using AI-assisted development in VS Code (Claude, Codex, Gemini). Stack-agnostic by design.</p>
   <div class="meta">
     <span>Made by Mike Cruz</span>
-    <span>v3.7 · 2026</span>
+    <span>v4.0 · 2026</span>
     <span>Click any step to expand</span>
   </div>
 </header>
@@ -1254,6 +1254,8 @@ Don't write code or create folders yet. Just think out loud.
 Save the output as docs/brainstorm.md.<button class="copy-btn">Copy</button></div>
 
           <div class="callout"><strong>Why this matters:</strong> the stack question gets seeded in Step 1 but not <em>decided</em> until Step 2. This forces the LLM (and you) to consider real alternatives instead of reaching for the familiar one.</div>
+
+          <div class="callout"><strong>brainstorm.md is ephemeral.</strong> Once Step 2 produces the PRD, the brainstorm has done its job. It's not load-bearing — nothing downstream reads from it. Keep it in <code class="inline">docs/</code> for the historical record, but don't maintain it.</div>
         </div>
       </div>
     </div>
@@ -1304,6 +1306,8 @@ weigh in on. Keep the whole PRD under 2 pages.<button class="copy-btn">Copy</but
             <li>The stack is over-engineered for the scope</li>
             <li>Deployment target and stack don't match</li>
           </ul>
+
+          <div class="callout"><strong>Amend the PRD when reality contradicts it.</strong> Mid-build, you'll learn things that change the scope, the stack, or the design language. When that happens, edit the PRD and add a one-line note explaining why. A stale PRD becomes a lie — and the whole workflow's discipline is about not trusting stale docs. The PRD doesn't get a pass.</div>
         </div>
       </div>
     </div>
@@ -1496,42 +1500,31 @@ to restart the session so the command loads.<button class="copy-btn">Copy</butto
       </div>
       <div class="step-body">
         <div class="step-body-inner">
-          <p>Building is where 80% of the time goes. The workflow's discipline here is small: one feature per branch, one review pass against AGENTS.md before merging, one PROGRESS.md update before closing the session. Repeat for every feature.</p>
+          <p>Building is where 80% of the time goes. The discipline is small but non-negotiable: one feature per branch, tests as you go, an independent review pass before merge, one PROGRESS.md update before closing the session. Repeat for every feature.</p>
 
           <div class="sub-label">The loop</div>
           <ul>
             <li><strong>Branch</strong> — <code class="inline">git switch -c feat/&lt;name&gt;</code>. One feature per branch even when working solo.</li>
             <li><strong>Build</strong> — ask the AI to implement the feature. Reference AGENTS.md conventions explicitly in the prompt.</li>
-            <li><strong>Review</strong> — before merging, ask the AI to audit the diff against AGENTS.md (use the prompt below).</li>
-            <li><strong>Merge</strong> — once review passes, merge to main with a clean commit message.</li>
+            <li><strong>Test</strong> — write tests for the feature as it lands, not after. For AI-generated code this is critical: tests are the guardrail that catches confident-but-wrong implementations.</li>
+            <li><strong>Review</strong> — invoke <code class="inline">/code-review</code> on the branch diff. This is the independent correctness gate (see below).</li>
+            <li><strong>Merge</strong> — once review passes and tests are green, merge to main with a clean commit message.</li>
             <li><strong>Log</strong> — Step 8 captures what got done. Don't skip this.</li>
           </ul>
 
-          <div class="sub-label">Copy-paste prompt for the review pass</div>
-          <div class="cmd prompt">Review the current branch's diff against main.
+          <div class="sub-label">The review gate</div>
+          <p>Claude Code ships a built-in <code class="inline">/code-review</code> command. Use it. Don't write a custom one — the built-in launches multiple parallel subagents to review the diff, catches more than a single prompt can, and reads your AGENTS.md and CLAUDE.md automatically.</p>
+          <div class="cmd">/code-review<button class="copy-btn">Copy</button></div>
+          <p>For higher-stakes ships (anything customer-facing, anything that touches money or auth, the final pre-deploy pass), use the heavier cloud-mode variant:</p>
+          <div class="cmd">/code-review ultra<button class="copy-btn">Copy</button></div>
 
-For every file changed:
-
-1. Check it against AGENTS.md conventions (code style, naming,
-   folder rules, writing style for any text changes)
-2. Flag any logic that's overly complex, duplicated, or that
-   could be simpler
-3. Look for missing tests, error handling, or edge cases
-4. Check for accidental .env mentions, hardcoded secrets, or
-   credentials in code or commit messages
-5. Verify all imports are used and dependencies are needed
-
-Output a numbered list of findings. For each finding, mark it
-as MUST FIX or CONSIDER. End with a one-line verdict: SAFE TO
-MERGE or NEEDS WORK.
-
-Don't make the changes yourself — just report.<button class="copy-btn">Copy</button></div>
+          <div class="callout"><strong>Why this matters more than a custom prompt:</strong> the agent that wrote the code has the same blind spots when reviewing it. Self-review by the same session catches style drift, not logic bugs. <code class="inline">/code-review</code> runs as an independent gate — separate subagents, fresh framing, designed to treat the diff as someone else's work. That's the layer that catches the bugs that hurt.</div>
 
           <div class="sub-label">Parallel work with git worktree</div>
           <p>For larger projects, <code class="inline">git worktree</code> lets you run multiple branches simultaneously without losing context. One AI session per worktree. Useful when one feature is blocked waiting on review and you want to start the next one.</p>
           <div class="cmd">git worktree add ../project-feat-auth feat/auth<button class="copy-btn">Copy</button></div>
 
-          <div class="callout"><strong>Resist the "just commit to main" temptation.</strong> Even solo, branching forces you to think of a feature as a discrete unit. It's what makes the review pass meaningful — without a diff, there's nothing for the AI to review.</div>
+          <div class="callout"><strong>Resist the "just commit to main" temptation.</strong> Even solo, branching forces you to think of a feature as a discrete unit. It's what makes the review gate meaningful — without a diff, there's nothing for <code class="inline">/code-review</code> to read.</div>
         </div>
       </div>
     </div>
@@ -1551,17 +1544,9 @@ Don't make the changes yourself — just report.<button class="copy-btn">Copy</b
       </div>
       <div class="step-body">
         <div class="step-body-inner">
-          <p>Before closing a session, run the external-memory skill in <code class="inline">update</code> mode. It surveys recent commits, drafts a PROGRESS.md entry, ticks PLAN.md items, and adds new VERIFY.md checks if needed.</p>
+          <p>Before closing a session, run the external-memory skill in <code class="inline">update</code> mode. It surveys recent commits, drafts a dated PROGRESS.md entry with a <code class="inline">Next:</code> line pointing at the most important next step, ticks completed PLAN.md items, and appends any new smoke checks to VERIFY.md.</p>
 
           <div class="cmd prompt">Run external-memory skill in update mode.<button class="copy-btn">Copy</button></div>
-
-          <div class="sub-label">What gets written</div>
-          <ul>
-            <li>A dated PROGRESS.md entry with one line per significant change</li>
-            <li>A <code class="inline">Next:</code> line pointing at the single most important next step</li>
-            <li>Updated checkboxes in PLAN.md</li>
-            <li>New smoke checks in VERIFY.md if endpoints or commands changed</li>
-          </ul>
 
           <div class="callout"><strong>Cold-start payoff:</strong> when you return to this project in 3 weeks, the next session starts with full context in under 30 seconds. No re-explaining.</div>
         </div>
@@ -1583,18 +1568,11 @@ Don't make the changes yourself — just report.<button class="copy-btn">Copy</b
       </div>
       <div class="step-body">
         <div class="step-body-inner">
-          <p>Every few weeks, or after returning from a long break, run the skill in <code class="inline">check</code> mode for a deep staleness audit.</p>
+          <p>Every few weeks, or after returning from a long break, run the skill in <code class="inline">check</code> mode for a deep staleness audit. It surfaces PROGRESS.md entries older than 30 days, PLAN.md items pointing at files that no longer exist, VERIFY.md commands referencing missing binaries, tech-stack drift between AGENTS.md and actual dependencies, and dangling <code class="inline">Next:</code> items that never made it back into PLAN.md.</p>
 
           <div class="cmd prompt">Run external-memory skill in check mode.<button class="copy-btn">Copy</button></div>
 
-          <div class="sub-label">What it surfaces</div>
-          <ul>
-            <li>PROGRESS.md entries older than 30 days</li>
-            <li>PLAN.md items pointing at files that no longer exist</li>
-            <li>VERIFY.md commands that reference missing binaries or scripts</li>
-            <li>Tech-stack drift between AGENTS.md and actual dependencies</li>
-            <li>Dangling <code class="inline">Next:</code> items that never made it to PLAN.md</li>
-          </ul>
+          <div class="callout"><strong>Doesn't auto-fix.</strong> The skill surfaces findings as a numbered list and asks before changing anything. The judgment stays with you.</div>
         </div>
       </div>
     </div>
@@ -2014,8 +1992,8 @@ flask run --debug
     </div>
     <div class="principle">
       <div class="principle-num">05</div>
-      <div class="principle-title">Update at the boundary</div>
-      <div class="principle-text">PROGRESS.md gets updated at the end of every session — not weeks later when memory has faded.</div>
+      <div class="principle-title">Update at session close</div>
+      <div class="principle-text">PROGRESS.md gets one entry per session, written before you stop — never per change, never weeks later. The boundary is what makes <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">Next:</code> and <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">Notes for future me</code> meaningful.</div>
     </div>
     <div class="principle">
       <div class="principle-num">06</div>
@@ -2024,21 +2002,26 @@ flask run --debug
     </div>
     <div class="principle">
       <div class="principle-num">07</div>
+      <div class="principle-title">A feature isn't done until a test would catch its regression</div>
+      <div class="principle-text">For AI-generated code, tests are the only independent signal that the implementation does what was asked. Without them, the only correctness check is the same model that wrote the code agreeing with itself.</div>
+    </div>
+    <div class="principle">
+      <div class="principle-num">08</div>
       <div class="principle-title">Verify, don't assume</div>
       <div class="principle-text">VERIFY.md exists so that "it works" is observable. Every project ships with exact commands that prove it.</div>
     </div>
     <div class="principle">
-      <div class="principle-num">08</div>
+      <div class="principle-num">09</div>
       <div class="principle-title">Capture the ritual as a command</div>
       <div class="principle-text">If you find yourself typing the same instruction often, save it as a slash command. One markdown file in <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">.claude/commands/</code>, available to every AI assistant in VS Code.</div>
     </div>
     <div class="principle">
-      <div class="principle-num">09</div>
+      <div class="principle-num">10</div>
       <div class="principle-title">Plain English, always</div>
       <div class="principle-text">No em dashes, no en dashes. Concise writing for senior stakeholders. Language that doesn't sound AI-generated.</div>
     </div>
     <div class="principle">
-      <div class="principle-num">10</div>
+      <div class="principle-num">11</div>
       <div class="principle-title">Containerize when in doubt</div>
       <div class="principle-text">If a project might move between VPS, on-prem, or edge, Docker is the abstraction that makes one repo work everywhere.</div>
     </div>
@@ -2164,7 +2147,7 @@ flask run --debug
 </section>
 
 <footer>
-  <div>Mike's AI Projects Workflow · v3.7 · 2026</div>
+  <div>Mike's AI Projects Workflow · v4.0 · 2026</div>
   <div>Built on <a href="https://github.com/mcruzae/claude-external-memory">claude-external-memory</a></div>
 </footer>
 
