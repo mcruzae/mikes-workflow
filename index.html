@@ -4,6 +4,19 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Mike's AI Projects Workflow</title>
+<meta name="description" content="A repeatable system for taking a project from idea to production using AI-assisted development in VS Code. Stack-agnostic by design." />
+<meta name="author" content="Mike Cruz" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Mike's AI Projects Workflow" />
+<meta property="og:description" content="A repeatable system for taking a project from idea to production using AI-assisted development in VS Code. Stack-agnostic by design." />
+<meta property="og:url" content="https://mcruzae.github.io/mikes-workflow/" />
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Mike's AI Projects Workflow" />
+<meta name="twitter:description" content="A repeatable system for taking a project from idea to production using AI-assisted development. Stack-agnostic by design." />
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23f4f0e8'/%3E%3Ctext x='50' y='72' font-family='Georgia,serif' font-size='64' font-style='italic' font-weight='500' text-anchor='middle' fill='%23d97757'%3EM%3C/text%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500;600&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -23,7 +36,6 @@
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
   html { scroll-behavior: smooth; }
 
   body {
@@ -36,7 +48,6 @@
     overflow-x: hidden;
   }
 
-  /* grain texture overlay */
   body::before {
     content: "";
     position: fixed;
@@ -44,7 +55,7 @@
     pointer-events: none;
     z-index: 1;
     opacity: 0.4;
-    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.1 0 0 0 0 0.1 0 0 0 0.08 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.1 0 0 0 0 0.1 0 0 0 0 0.1 0 0 0 0.08 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
   }
 
   .container {
@@ -55,11 +66,7 @@
     z-index: 2;
   }
 
-  /* header */
-  header {
-    margin-bottom: 72px;
-    position: relative;
-  }
+  header { margin-bottom: 72px; position: relative; }
 
   .eyebrow {
     display: inline-flex;
@@ -107,7 +114,7 @@
     font-weight: 300;
     font-size: clamp(18px, 2vw, 22px);
     color: var(--muted);
-    max-width: 560px;
+    max-width: 600px;
     line-height: 1.4;
   }
 
@@ -121,11 +128,7 @@
     color: var(--muted);
   }
 
-  .meta span {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
+  .meta span { display: flex; align-items: center; gap: 6px; }
 
   .meta span::before {
     content: "";
@@ -136,7 +139,49 @@
     opacity: 0.4;
   }
 
-  /* legend */
+  .stance {
+    background: linear-gradient(135deg, var(--ink) 0%, var(--ink-soft) 100%);
+    color: var(--cream);
+    padding: 32px 36px;
+    border-radius: 16px;
+    margin-bottom: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stance::before {
+    content: "";
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(217, 119, 87, 0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .stance-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--orange-soft);
+    margin-bottom: 12px;
+    position: relative;
+  }
+
+  .stance-text {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 1.45;
+    color: var(--cream);
+    position: relative;
+    max-width: 720px;
+  }
+
+  .stance-text em { color: var(--orange-soft); font-style: italic; }
+
   .legend {
     display: flex;
     gap: 16px;
@@ -156,22 +201,93 @@
     color: var(--ink-soft);
   }
 
-  .legend-dot {
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-
+  .legend-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
   .legend-dot.think { background: var(--ink); }
   .legend-dot.scaffold { background: var(--orange); }
   .legend-dot.build { background: var(--orange-soft); border: 2px solid var(--orange-deep); }
   .legend-dot.maintain { background: var(--cream); border: 2px solid var(--ink); }
 
-  /* steps */
-  .timeline {
+  /* prerequisites */
+  .prereq {
+    background: var(--cream-deep);
+    border: 1px solid var(--cream-line);
+    border-radius: 14px;
+    padding: 28px 32px;
+    margin-bottom: 48px;
     position: relative;
   }
+
+  .prereq-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--orange-deep);
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+
+  .prereq-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 22px;
+    color: var(--ink);
+    margin-bottom: 6px;
+    letter-spacing: -0.015em;
+  }
+
+  .prereq-sub {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 20px;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  .prereq-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px 28px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .prereq-list li {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    padding-left: 24px;
+    position: relative;
+  }
+
+  .prereq-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 12px;
+    height: 1px;
+    background: var(--orange);
+  }
+
+  .prereq-list strong {
+    color: var(--ink);
+    font-weight: 600;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .prereq-list a {
+    color: var(--orange-deep);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--orange);
+  }
+
+  .prereq-list a:hover { color: var(--orange); }
+
+  .timeline { position: relative; }
 
   .timeline::before {
     content: "";
@@ -303,15 +419,8 @@
     stroke: var(--ink);
   }
 
-  .step.open .step-toggle {
-    background: var(--orange);
-    border-color: var(--orange-deep);
-  }
-
-  .step.open .step-toggle svg {
-    transform: rotate(45deg);
-    stroke: var(--cream);
-  }
+  .step.open .step-toggle { background: var(--orange); border-color: var(--orange-deep); }
+  .step.open .step-toggle svg { transform: rotate(45deg); stroke: var(--cream); }
 
   .step-body {
     max-height: 0;
@@ -319,7 +428,7 @@
     transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .step.open .step-body { max-height: 2400px; }
+  .step.open .step-body { max-height: 4000px; }
 
   .step-body-inner {
     padding: 0 28px 28px 28px;
@@ -336,11 +445,7 @@
   }
 
   .step-body p strong { color: var(--ink); font-weight: 600; }
-
-  .step-body ul {
-    list-style: none;
-    margin-bottom: 16px;
-  }
+  .step-body ul { list-style: none; margin-bottom: 16px; }
 
   .step-body li {
     padding-left: 20px;
@@ -361,7 +466,6 @@
     background: var(--orange);
   }
 
-  /* code/command blocks */
   .cmd {
     font-family: 'JetBrains Mono', monospace;
     font-size: 13px;
@@ -373,6 +477,7 @@
     position: relative;
     overflow-x: auto;
     line-height: 1.5;
+    white-space: pre-wrap;
   }
 
   .cmd::before {
@@ -382,9 +487,17 @@
     user-select: none;
   }
 
+  .cmd.prompt {
+    background: #161412;
+    border-left: 3px solid var(--orange);
+    padding-left: 18px;
+  }
+
   .cmd.prompt::before {
     content: "›";
     color: var(--orange);
+    font-size: 16px;
+    vertical-align: top;
   }
 
   .cmd.note::before { content: ""; margin: 0; }
@@ -396,7 +509,30 @@
     font-style: normal;
   }
 
-  /* sub-sections */
+  .copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(244, 240, 232, 0.08);
+    color: var(--cream);
+    border: 1px solid rgba(244, 240, 232, 0.15);
+    border-radius: 4px;
+    padding: 4px 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    opacity: 0;
+  }
+
+  .cmd:hover .copy-btn { opacity: 1; }
+  .copy-btn:hover { background: var(--orange); border-color: var(--orange); color: var(--cream); }
+  .copy-btn.copied { background: var(--orange); border-color: var(--orange); }
+  .cmd.note .copy-btn { background: rgba(26, 26, 26, 0.06); color: var(--ink-soft); border-color: var(--cream-line); }
+  .cmd.note .copy-btn:hover { background: var(--orange); color: var(--cream); border-color: var(--orange); }
+
   .sub-label {
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
@@ -422,24 +558,304 @@
 
   .callout strong { color: var(--orange-deep); }
 
-  /* footer principles */
-  .principles {
+  /* design section */
+  .design-section {
     margin-top: 80px;
     padding: 48px 0 0;
     border-top: 1px solid var(--cream-line);
   }
 
-  .principles-header {
-    margin-bottom: 36px;
-  }
+  .section-header { margin-bottom: 32px; }
 
-  .principles-title {
+  .section-title {
     font-family: 'Fraunces', serif;
     font-weight: 500;
     font-style: italic;
     font-size: 32px;
     color: var(--ink);
     margin-bottom: 8px;
+  }
+
+  .section-sub {
+    font-size: 14px;
+    color: var(--muted);
+    max-width: 640px;
+    line-height: 1.55;
+  }
+
+  .design-flow {
+    background: var(--cream-deep);
+    border: 1px solid var(--cream-line);
+    border-radius: 14px;
+    padding: 8px;
+    margin-bottom: 32px;
+  }
+
+  .design-row {
+    display: grid;
+    grid-template-columns: 140px 200px 1fr;
+    gap: 20px;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px dashed var(--cream-line);
+  }
+
+  .design-row:last-child { border-bottom: none; }
+
+  .design-phase {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--orange-deep);
+    font-weight: 600;
+  }
+
+  .design-skill {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 17px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+
+  .design-skill a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--orange);
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  .design-skill a:hover {
+    color: var(--orange-deep);
+    border-bottom-color: var(--orange-deep);
+  }
+
+  .design-skill a::after {
+    content: "↗";
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 12px;
+    color: var(--orange);
+    font-weight: 400;
+    transform: translateY(-2px);
+    display: inline-block;
+  }
+
+  .design-skill .source-note {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 400;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    margin-top: 4px;
+    text-transform: lowercase;
+  }
+
+  .design-trigger {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+
+  .design-row.gate {
+    background: rgba(217, 119, 87, 0.05);
+    border-radius: 8px;
+  }
+
+  .design-row.gate .design-skill {
+    color: var(--orange-deep);
+  }
+
+  /* reference stacks */
+  .reference {
+    margin-top: 80px;
+    padding: 48px 0 0;
+    border-top: 1px solid var(--cream-line);
+  }
+
+  .stack-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+
+  .stack-card {
+    background: var(--cream-deep);
+    border: 1px solid var(--cream-line);
+    border-radius: 14px;
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stack-card::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--orange);
+    opacity: 0.7;
+  }
+
+  .stack-name {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 22px;
+    color: var(--ink);
+    margin-bottom: 4px;
+    letter-spacing: -0.01em;
+  }
+
+  .stack-use {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+
+  .stack-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--cream-line);
+    font-size: 13px;
+  }
+
+  .stack-row:last-child { border-bottom: none; }
+
+  .stack-row-label {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    align-self: center;
+  }
+
+  .stack-row-val {
+    color: var(--ink);
+    font-weight: 500;
+    text-align: right;
+    max-width: 60%;
+  }
+
+  .stack-why {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--cream-line);
+  }
+
+  .stack-why-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--orange-deep);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .stack-why ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .stack-why li {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+    padding-left: 16px;
+    position: relative;
+    margin-bottom: 6px;
+  }
+
+  .stack-why li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 6px;
+    height: 1px;
+    background: var(--orange);
+  }
+
+  .stack-why li:last-child { margin-bottom: 0; }
+
+  .switch-note {
+    margin-top: 32px;
+    padding: 24px 28px;
+    background: var(--cream-deep);
+    border: 1px solid var(--cream-line);
+    border-radius: 12px;
+  }
+
+  .switch-note-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 18px;
+    color: var(--ink);
+    margin-bottom: 14px;
+    letter-spacing: -0.01em;
+  }
+
+  .switch-note-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .switch-col-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--orange-deep);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .switch-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .switch-col li {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+    padding-left: 16px;
+    position: relative;
+    margin-bottom: 6px;
+  }
+
+  .switch-col li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--orange);
+    font-weight: 600;
+  }
+
+  @media (max-width: 640px) {
+    .switch-note-grid { grid-template-columns: 1fr; gap: 18px; }
+  }
+
+  /* principles */
+  .principles {
+    margin-top: 80px;
+    padding: 48px 0 0;
+    border-top: 1px solid var(--cream-line);
   }
 
   .principles-grid {
@@ -485,7 +901,6 @@
     line-height: 1.5;
   }
 
-  /* footer */
   footer {
     margin-top: 80px;
     padding-top: 32px;
@@ -509,7 +924,6 @@
 
   footer a:hover { color: var(--orange); }
 
-  /* controls */
   .controls {
     display: flex;
     gap: 8px;
@@ -537,7 +951,214 @@
     background: rgba(217, 119, 87, 0.04);
   }
 
-  /* mobile */
+  code.inline {
+    background: var(--cream);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--ink);
+    border: 1px solid var(--cream-line);
+  }
+
+  /* artifact samples section */
+  .samples {
+    margin-top: 80px;
+    padding: 48px 0 0;
+    border-top: 1px solid var(--cream-line);
+  }
+
+  .sample-card {
+    background: var(--cream-deep);
+    border: 1px solid var(--cream-line);
+    border-radius: 12px;
+    margin-bottom: 16px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .sample-card:hover {
+    border-color: var(--orange);
+  }
+
+  .sample-header {
+    padding: 18px 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    user-select: none;
+  }
+
+  .sample-file {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--ink);
+    font-weight: 600;
+    background: var(--cream);
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--cream-line);
+  }
+
+  .sample-desc {
+    flex: 1;
+    font-size: 14px;
+    color: var(--muted);
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  .sample-toggle {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--cream);
+    border: 1px solid var(--cream-line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+  }
+
+  .sample-toggle svg {
+    width: 12px;
+    height: 12px;
+    transition: transform 0.3s ease;
+    stroke: var(--ink);
+  }
+
+  .sample-card.open .sample-toggle {
+    background: var(--orange);
+    border-color: var(--orange-deep);
+  }
+
+  .sample-card.open .sample-toggle svg {
+    transform: rotate(45deg);
+    stroke: var(--cream);
+  }
+
+  .sample-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .sample-card.open .sample-body { max-height: 2000px; }
+
+  .sample-body-inner {
+    padding: 0 24px 24px 24px;
+    border-top: 1px dashed var(--cream-line);
+    padding-top: 18px;
+  }
+
+  .sample-body pre {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 18px 22px;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    margin: 0;
+    white-space: pre-wrap;
+  }
+
+  .sample-body .sample-note {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 12px;
+    line-height: 1.55;
+  }
+
+  /* glossary */
+  .glossary {
+    margin-top: 80px;
+    padding: 48px 0 0;
+    border-top: 1px solid var(--cream-line);
+  }
+
+  .glossary-intro {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 28px;
+    padding: 14px 18px;
+    background: var(--cream-deep);
+    border-left: 3px solid var(--orange);
+    border-radius: 0 8px 8px 0;
+    line-height: 1.55;
+  }
+
+  .glossary-intro strong { color: var(--ink); }
+
+  .glossary-group {
+    margin-bottom: 32px;
+  }
+
+  .glossary-group-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--orange-deep);
+    font-weight: 600;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed var(--cream-line);
+  }
+
+  .glossary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 18px 32px;
+  }
+
+  .glossary-term {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+
+  .glossary-term dt {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--ink);
+    margin-bottom: 4px;
+    letter-spacing: -0.005em;
+  }
+
+  .glossary-term dd {
+    margin: 0;
+    color: var(--ink-soft);
+  }
+
+  .glossary-term .xref {
+    font-style: italic;
+    color: var(--orange-deep);
+  }
+
+  .glossary-term code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    background: var(--cream);
+    padding: 1px 5px;
+    border-radius: 3px;
+    border: 1px solid var(--cream-line);
+    color: var(--ink);
+  }
+
+  @media (max-width: 720px) {
+    .design-row {
+      grid-template-columns: 1fr;
+      gap: 6px;
+      padding: 18px 20px;
+    }
+  }
+
   @media (max-width: 640px) {
     .container { padding: 40px 20px 64px; }
     .step { padding-left: 56px; }
@@ -549,15 +1170,18 @@
     h1 { font-size: 44px; }
     .legend { padding: 16px; gap: 12px; }
     .legend-item { font-size: 12px; }
+    .stance { padding: 24px; }
+    .stance-text { font-size: 17px; }
   }
 
-  /* print */
   @media print {
     body { background: white; }
     body::before { display: none; }
-    .controls, .step-toggle { display: none; }
+    .controls, .step-toggle, .copy-btn { display: none; }
     .step-body { max-height: none !important; }
     .step-card { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+    .stance { background: #f0f0f0; color: #1a1a1a; }
+    .stance-text { color: #1a1a1a; }
   }
 </style>
 </head>
@@ -565,12 +1189,12 @@
 <div class="container">
 
 <header>
-  <div class="eyebrow">Personal Build System · v1</div>
+  <div class="eyebrow">Personal Build System · v3.5</div>
   <h1>Mike's AI Projects <span class="italic">Workflow</span></h1>
-  <p class="subtitle">A repeatable system for taking an internal tool from <em>idea</em> to <em>production</em> using Claude Code, Codex, and durable agent memory.</p>
+  <p class="subtitle">A repeatable system for taking a project from <em>idea</em> to <em>production</em> using AI-assisted development in VS Code (Claude, Codex, Gemini). Stack-agnostic by design.</p>
   <div class="meta">
     <span>Made by Mike Cruz</span>
-    <span>Updated May 2026</span>
+    <span>v3.5 · 2026</span>
     <span>Click any step to expand</span>
   </div>
 </header>
@@ -578,8 +1202,22 @@
 <div class="legend">
   <div class="legend-item"><span class="legend-dot think"></span> Think</div>
   <div class="legend-item"><span class="legend-dot scaffold"></span> Scaffold</div>
-  <div class="legend-item"><span class="legend-dot build"></span> Build</div>
   <div class="legend-item"><span class="legend-dot maintain"></span> Maintain</div>
+</div>
+
+<div class="prereq">
+  <div class="prereq-label">Before you start · One-time setup</div>
+  <div class="prereq-title">Prerequisites</div>
+  <div class="prereq-sub">Set these up once per machine. The workflow assumes all of them.</div>
+  <ul class="prereq-list">
+    <li><strong>VS Code</strong>Your editor. <a href="https://code.visualstudio.com/" target="_blank" rel="noopener">code.visualstudio.com</a></li>
+    <li><strong>AI assistant extensions in VS Code</strong>At least one of: Claude, Codex, or Gemini. Sign into your account inside the extension.</li>
+    <li><strong>Git</strong>Pre-installed on most systems. Verify with <code class="inline">git --version</code>.</li>
+    <li><strong>GitHub CLI (gh)</strong>For private repo creation in Step 3. Install via <code class="inline">brew install gh</code> or <a href="https://cli.github.com/" target="_blank" rel="noopener">cli.github.com</a>, then <code class="inline">gh auth login</code>.</li>
+    <li><strong>claude-external-memory skill</strong>Install once. <a href="https://github.com/mcruzae/claude-external-memory" target="_blank" rel="noopener">github.com/mcruzae/claude-external-memory</a></li>
+    <li><strong>Design skills (optional)</strong>front-end-design, ui-ux-pro-max, impeccable, open-design. See the UI/UX section below for sources.</li>
+    <li><strong>Playwright MCP (optional)</strong>Required only if you want the ship-check ritual in Step 9 to run responsive screenshots and a11y audits.</li>
+  </ul>
 </div>
 
 <div class="controls">
@@ -603,17 +1241,23 @@
       </div>
       <div class="step-body">
         <div class="step-body-inner">
-          <p>Use Claude's <strong>plan mode</strong> (Shift+Tab in Claude Code, or the app's planning interface) for divergent thinking. The goal here is to explore the problem space, not commit to it.</p>
-          <div class="sub-label">What to capture</div>
-          <ul>
-            <li>The actual problem this internal tool solves</li>
-            <li>Who uses it (D-Link MEA team, country offices, specific roles)</li>
-            <li>Adjacent tools or workflows it replaces or connects to</li>
-            <li>Constraints worth surfacing early (compliance, regional latency, on-prem vs VPS)</li>
-          </ul>
-          <div class="callout"><strong>Why no folders yet:</strong> committing to structure during brainstorming makes implicit architecture decisions. Flask vs FastAPI dictates one layout, static site another. Stay loose.</div>
-          <div class="sub-label">Output</div>
-          <p>A single file: <code style="background:var(--cream);padding:2px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:13px;">docs/brainstorm.md</code> — or just a saved chat thread.</p>
+          <p>Use plan mode (Shift+Tab in Claude Code, or the chat app) for divergent thinking. The goal is to explore the problem space — including <strong>which tech stack actually fits</strong> — not commit to anything yet.</p>
+
+          <div class="sub-label">Sample prompt</div>
+          <div class="cmd prompt">I want to build [type of project] that solves [problem] for [users]. Help me think through:
+
+- Who actually uses this and what pain it removes
+- Scope for v1 vs nice-to-haves
+- Deployment constraints (public, internal, on-prem, VPS, edge)
+- Candidate tech stacks worth considering for this specific
+  use case, with brief pros and cons for each. Pick what
+  suits the requirements. Do not default to anything.
+- Risks or unknowns worth surfacing now
+
+Don't write code or create folders yet. Just think out loud.
+Save the output as docs/brainstorm.md.<button class="copy-btn">Copy</button></div>
+
+          <div class="callout"><strong>Why this matters:</strong> the stack question gets seeded in Step 1 but not <em>decided</em> until Step 2. This forces the LLM (and you) to consider real alternatives instead of reaching for the familiar one.</div>
         </div>
       </div>
     </div>
@@ -626,25 +1270,44 @@
       <div class="step-header">
         <div class="step-title-block">
           <div class="step-phase">Think · Converge</div>
-          <div class="step-title">Generate the PRD / blueprint</div>
-          <div class="step-summary">Turn the brainstorm into a real spec.</div>
+          <div class="step-title">Generate the PRD — commit stack &amp; design language</div>
+          <div class="step-summary">Stack and design language are decided here.</div>
         </div>
         <div class="step-toggle"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
       </div>
       <div class="step-body">
         <div class="step-body-inner">
-          <p>Ask Claude to translate the brainstorm into a structured Product Requirements Document. This is where ambiguity gets killed.</p>
-          <div class="sub-label">Sections worth including</div>
+          <p>Ask the LLM to translate the brainstorm into a structured PRD. Two sections matter most: <strong>Tech Stack</strong> (commits the framework) and <strong>Design Language</strong> (commits the aesthetic direction). Both decisions ripple through everything that follows.</p>
+
+          <div class="sub-label">Sample prompt</div>
+          <div class="cmd prompt">Read docs/brainstorm.md and produce a PRD in docs/PRD.md
+with these sections:
+
+- Problem (one paragraph)
+- Users (specific roles, not "the team")
+- Scope for v1
+- Non-goals (what's explicitly out)
+- Success Criteria (observable, not aspirational)
+- Deployment Target
+- Tech Stack (with reasoning over alternatives)
+- Design Language (brutalist, Apple-like, editorial, Bloomberg/
+  Vision Pro premium dark, etc. — name the aesthetic and give
+  3 reference adjectives)
+- Tech Constraints (auth pattern, data residency, etc.)
+
+The Tech Stack and Design Language sections are commit points.
+Propose specifics with reasoning. Flag any decisions I should
+weigh in on. Keep the whole PRD under 2 pages.<button class="copy-btn">Copy</button></div>
+
+          <div class="callout"><strong>Why design language belongs here:</strong> deciding the aesthetic early gives every design skill in the UI/UX section below a clear reference to work from, instead of starting from "make it look good" each time.</div>
+
+          <div class="sub-label">When to push back on the stack proposal</div>
           <ul>
-            <li><strong>Problem</strong> — the one-paragraph reason this exists</li>
-            <li><strong>Users</strong> — specific roles, not "the team"</li>
-            <li><strong>Scope</strong> — what's in v1</li>
-            <li><strong>Non-goals</strong> — what's explicitly out (this saves the most time later)</li>
-            <li><strong>Success criteria</strong> — observable, not aspirational</li>
-            <li><strong>Deployment target</strong> — Hostinger VPS, on-prem, or undecided</li>
-            <li><strong>Tech constraints</strong> — Flask default, SQLite default, internal-only auth pattern</li>
+            <li>The reasoning is thin or hand-wavy</li>
+            <li>The choice optimizes for the LLM's familiarity rather than the project's needs</li>
+            <li>The stack is over-engineered for the scope</li>
+            <li>Deployment target and stack don't match</li>
           </ul>
-          <div class="cmd prompt">Read docs/brainstorm.md and produce a PRD in docs/PRD.md following the sections: Problem, Users, Scope, Non-goals, Success Criteria, Deployment, Tech Constraints. Keep it under 2 pages.</div>
         </div>
       </div>
     </div>
@@ -665,11 +1328,46 @@
       <div class="step-body">
         <div class="step-body-inner">
           <p>Initialize the repo with only the planning docs. This gives a clean starting point you can always return to without losing the thinking work.</p>
-          <div class="cmd">git init</div>
-          <div class="cmd">git add docs/ && git commit -m "docs: brainstorm + PRD"</div>
-          <div class="callout"><strong>Add a pre-commit secret guard now</strong>, before any code exists. Tools like <code>gitleaks</code> or a simple regex pre-commit hook prevent <code>.env</code> leaks that are nearly impossible to scrub from history later.</div>
-          <div class="sub-label">Repo origin</div>
-          <p>Push to a private repo before writing code. Future-you wants the rollback option.</p>
+
+          <div class="sub-label">Manual commands</div>
+          <div class="cmd">git init<button class="copy-btn">Copy</button></div>
+          <div class="cmd">git add docs/ && git commit -m "docs: brainstorm + PRD"<button class="copy-btn">Copy</button></div>
+
+          <div class="sub-label">Or paste this prompt to do it all in one go</div>
+          <div class="cmd prompt">Set up version control for this project.
+
+1. Initialize a git repo in the current directory (git init)
+2. Add a .gitignore appropriate to the stack chosen in
+   docs/PRD.md (Python, Node, etc.) plus the usual suspects:
+   .env, .DS_Store, node_modules, __pycache__, etc.
+3. Stage and commit the docs/ folder with the message
+   "docs: brainstorm + PRD"
+4. Ask me what to name the repo, then use the gh CLI to create
+   a private GitHub repo under my account, add it as origin,
+   and push the main branch
+
+Default to private. I can change it to public later with
+'gh repo edit --visibility public' if needed.<button class="copy-btn">Copy</button></div>
+
+          <div class="callout"><strong>Prerequisite:</strong> the <code class="inline">gh</code> CLI must be installed and authenticated once per machine (see Prerequisites box at the top). Run <code class="inline">gh auth status</code> to check.</div>
+
+          <div class="sub-label">Optional · Add a secret guard to prevent .env leaks</div>
+          <p>Once-per-machine setup. Catches accidental commits of <code class="inline">.env</code> files and API keys before they hit GitHub history (where they're nearly impossible to scrub).</p>
+          <div class="cmd prompt">Install a gitleaks pre-commit hook in this repo.
+
+1. Check if gitleaks is installed (gitleaks version). If not,
+   install it via brew (mac) or the appropriate package
+   manager for my OS.
+2. Create a .pre-commit-config.yaml at the repo root that runs
+   gitleaks on every commit
+3. Install pre-commit if not already installed (pip install
+   pre-commit or brew install pre-commit)
+4. Run 'pre-commit install' to wire it up
+5. Run 'pre-commit run --all-files' once to verify it works
+
+Tell me if anything's missing or fails. After this, any commit
+that contains an .env file or detected secret will be blocked
+automatically.<button class="copy-btn">Copy</button></div>
         </div>
       </div>
     </div>
@@ -682,18 +1380,25 @@
       <div class="step-header">
         <div class="step-title-block">
           <div class="step-phase">Scaffold · Structure</div>
-          <div class="step-title">Propose &amp; scaffold the folder structure</div>
-          <div class="step-summary">Ask Claude Code to derive it from the PRD.</div>
+          <div class="step-title">Scaffold the folder structure from the PRD</div>
+          <div class="step-summary">The stack is settled. The structure follows.</div>
         </div>
         <div class="step-toggle"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
       </div>
       <div class="step-body">
         <div class="step-body-inner">
-          <p>Now structure earns its place — the PRD has settled the tech stack and components, so the folder layout follows naturally.</p>
-          <div class="cmd prompt">Read docs/PRD.md and propose a folder structure. Justify each top-level folder. Then scaffold it.</div>
-          <div class="sub-label">Typical layout for internal Flask tools</div>
-          <div class="cmd note">/src · /tests · /docs · /scripts · /static · /templates · .env.example · requirements.txt</div>
-          <div class="callout"><strong>Decide Docker now if on-prem is a possibility.</strong> A <code>docker-compose.yml</code> from day one means VPS-to-on-prem migration is a <code>git pull</code> and <code>docker compose up</code> — not a rebuild.</div>
+          <p>The PRD has settled the stack — now the folder layout follows naturally from it. Different stacks imply different structures, and the LLM applies the right idioms for whichever was chosen.</p>
+
+          <div class="sub-label">Sample prompt</div>
+          <div class="cmd prompt">Read docs/PRD.md, specifically the Tech Stack section.
+Propose a folder structure idiomatic to that stack, then
+scaffold it. Include the stack's standard config files
+(package.json, requirements.txt, Cargo.toml, etc.) with
+sensible defaults and a starter README.
+
+Justify each top-level folder briefly in your response.<button class="copy-btn">Copy</button></div>
+
+          <div class="callout"><strong>If on-prem is in play:</strong> ask the LLM to include a <code class="inline">Dockerfile</code> and <code class="inline">docker-compose.yml</code> from day one. Container-first means VPS-to-on-prem migration is a <code class="inline">git pull</code> and <code class="inline">docker compose up</code> regardless of the stack.</div>
         </div>
       </div>
     </div>
@@ -713,15 +1418,17 @@
       </div>
       <div class="step-body">
         <div class="step-body-inner">
-          <p>Run the <a style="color:var(--orange-deep);" href="https://github.com/mcruzae/claude-external-memory">claude-external-memory</a> skill in <code>init</code> mode. It reads the README, package files, and git log to produce a customized AGENTS.md, PLAN.md, PROGRESS.md, and VERIFY.md — plus pointer files for CLAUDE.md and GEMINI.md.</p>
-          <div class="sub-label">Why this beats /init</div>
+          <p>Run the <a style="color:var(--orange-deep);" href="https://github.com/mcruzae/claude-external-memory">claude-external-memory</a> skill in <code class="inline">init</code> mode. It reads the manifest files created in Step 4 and the PRD, then produces a customized AGENTS.md, PLAN.md, PROGRESS.md, and VERIFY.md — plus pointer files for CLAUDE.md and GEMINI.md.</p>
+
+          <div class="cmd prompt">Run external-memory skill in init mode for this repo.<button class="copy-btn">Copy</button></div>
+
+          <div class="sub-label">Why this beats running /init in each tool</div>
           <ul>
             <li><strong>Cross-tool</strong> — Claude Code, Codex, and Gemini CLI all read the same canonical source</li>
             <li><strong>Four files, four lifespans</strong> — norms, plan, log, and verification commands stay separate so they don't rot together</li>
             <li><strong>VERIFY.md</strong> captures the exact commands that prove the project works — the part /init skips entirely</li>
+            <li><strong>Stack-aware</strong> — reads the manifest from Step 4 so the AGENTS.md actually reflects the real stack</li>
           </ul>
-          <div class="cmd prompt">Run external-memory skill init on this repo</div>
-          <div class="callout"><strong>Why invoke <em>after</em> scaffolding:</strong> the skill reads <code>package.json</code>, <code>requirements.txt</code>, and the README to seed the tech-stack table. Invoking before those exist produces stubs full of <code>_TODO_</code> markers.</div>
         </div>
       </div>
     </div>
@@ -734,7 +1441,7 @@
       <div class="step-header">
         <div class="step-title-block">
           <div class="step-phase">Scaffold · Tooling</div>
-          <div class="step-title">Wire up MCP servers &amp; slash commands</div>
+          <div class="step-title">Wire up MCP servers &amp; custom commands</div>
           <div class="step-summary">Make agents project-aware from day one.</div>
         </div>
         <div class="step-toggle"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
@@ -743,51 +1450,45 @@
         <div class="step-body-inner">
           <div class="sub-label">MCP servers to consider</div>
           <ul>
-            <li><strong>Hostinger MCP</strong> — VPS state, disk, ports, services. Stops Claude from suggesting port 5000 when the mailer already owns it.</li>
-            <li><strong>Playwright MCP</strong> — UI smoke tests for internal dashboards</li>
-            <li><strong>Postgres / SQLite MCP</strong> — if the project has a database, let agents inspect schema directly</li>
+            <li><strong>Hosting provider MCP</strong> (Hostinger, AWS, Vercel) — for VPS state, deployment, resource awareness</li>
+            <li><strong>Database MCP</strong> (Postgres, SQLite) — let agents inspect schema directly if the project has one</li>
+            <li><strong>Playwright MCP</strong> — required for the ship-check ritual in Step 9 (responsive screenshots, accessibility audits)</li>
             <li><strong>GitHub MCP</strong> — for PR review and issue triage workflows</li>
           </ul>
+
           <div class="sub-label">Custom slash commands</div>
-          <p>Add a <code>.claude/commands/</code> folder with repeatable commands tuned to this project:</p>
-          <div class="cmd note">/add-feature  → scaffolded route + template + test stub<br>/review-pr    → walks recent diff against AGENTS.md conventions<br>/deploy       → runs verify checks then ships to VPS</div>
+          <p>Add a <code class="inline">.claude/commands/</code> folder with repeatable commands tuned to this project. Each command is a single markdown file. The filename becomes the slash command (e.g. <code class="inline">ship-check.md</code> → <code class="inline">/ship-check</code>).</p>
+
+          <p>Don't write these by hand. Paste the prompt below into your AI assistant in VS Code and let it create the folder and file for you.</p>
+
+          <div class="sub-label">Copy-paste prompt to create a slash command</div>
+          <div class="cmd prompt">Create a custom slash command for this project.
+
+Command name: &lt;name&gt;
+What it should do: &lt;describe the behavior in 2-3 sentences&gt;
+
+Steps:
+1. Create the folder .claude/commands/ if it doesn't exist
+2. Create the file .claude/commands/&lt;name&gt;.md
+3. Inside the file, write a clear prompt that tells Claude
+   exactly what to do when /&lt;name&gt; is invoked
+4. Add a one-line description at the top so it shows up in
+   the slash menu
+
+After creating the file, tell me how to invoke it and remind me
+to restart the session so the command loads.<button class="copy-btn">Copy</button></div>
+
+          <div class="callout"><strong>Current commands in this workflow:</strong> only <code class="inline">/ship-check</code> so far (see Step 9 for the full prompt). Add more as you notice yourself typing the same instruction repeatedly — that's the signal a command is worth creating.</div>
+
+          <div class="callout"><strong>VS Code workflow note:</strong> the <code class="inline">.claude/commands/</code> folder lives in your repo and is picked up by the Claude, Codex, and Gemini VS Code extensions. Commit it to git so teammates inherit the same commands. For personal commands across all projects, use <code class="inline">~/.claude/commands/</code> instead.</div>
         </div>
       </div>
     </div>
   </div>
 
   <!-- STEP 7 -->
-  <div class="step phase-build">
-    <div class="step-marker">07</div>
-    <div class="step-card">
-      <div class="step-header">
-        <div class="step-title-block">
-          <div class="step-phase">Build · Iterate</div>
-          <div class="step-title">Vibe-code with Claude Code + Codex in parallel</div>
-          <div class="step-summary">Each tool has a different strength. Use both.</div>
-        </div>
-        <div class="step-toggle"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
-      </div>
-      <div class="step-body">
-        <div class="step-body-inner">
-          <div class="sub-label">Division of labor</div>
-          <ul>
-            <li><strong>Claude Code</strong> — architecture, refactoring, code review, debugging the hairy stuff</li>
-            <li><strong>Codex</strong> — focused implementation tasks, test writing, boilerplate</li>
-            <li><strong>Cross-check pattern</strong> — Codex implements, Claude Code reviews against AGENTS.md conventions</li>
-          </ul>
-          <div class="sub-label">Branch per feature, even solo</div>
-          <div class="cmd">git switch -c feat/auth</div>
-          <p>Combined with <code>git worktree</code>, this lets you run parallel agent sessions on different features without context contamination.</p>
-          <div class="callout"><strong>Plain English, no em dashes, concise.</strong> Bake this into AGENTS.md so every drafting task — emails, docs, commit messages — defaults to your house style.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- STEP 8 -->
   <div class="step phase-maintain">
-    <div class="step-marker">08</div>
+    <div class="step-marker">07</div>
     <div class="step-card">
       <div class="step-header">
         <div class="step-title-block">
@@ -799,24 +1500,32 @@
       </div>
       <div class="step-body">
         <div class="step-body-inner">
-          <p>Before closing a session, run the external-memory skill in <code>update</code> mode. It surveys recent commits, drafts a PROGRESS.md entry, ticks PLAN.md items, and adds new VERIFY.md checks if needed.</p>
-          <div class="cmd prompt">Run external-memory skill update</div>
+          <p>Before closing a session, run the external-memory skill in <code class="inline">update</code> mode. It surveys recent commits, drafts a PROGRESS.md entry, ticks PLAN.md items, and adds new VERIFY.md checks if needed.</p>
+
+          <div class="cmd prompt">Run external-memory skill in update mode.<button class="copy-btn">Copy</button></div>
+
           <div class="sub-label">What gets written</div>
           <ul>
             <li>A dated PROGRESS.md entry with one line per significant change</li>
-            <li>A <code>Next:</code> line pointing at the single most important next step</li>
+            <li>A <code class="inline">Next:</code> line pointing at the single most important next step</li>
             <li>Updated checkboxes in PLAN.md</li>
             <li>New smoke checks in VERIFY.md if endpoints or commands changed</li>
           </ul>
+
+          <div class="sub-label">Working conventions during the session</div>
+          <p>Branch per feature, even solo:</p>
+          <div class="cmd">git switch -c feat/auth<button class="copy-btn">Copy</button></div>
+          <p>Combined with <code class="inline">git worktree</code>, this lets you run parallel agent sessions on different features without context contamination.</p>
+
           <div class="callout"><strong>Cold-start payoff:</strong> when you return to this project in 3 weeks, the next session starts with full context in under 30 seconds. No re-explaining.</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- STEP 9 -->
+  <!-- STEP 8 -->
   <div class="step phase-maintain">
-    <div class="step-marker">09</div>
+    <div class="step-marker">08</div>
     <div class="step-card">
       <div class="step-header">
         <div class="step-title-block">
@@ -828,49 +1537,83 @@
       </div>
       <div class="step-body">
         <div class="step-body-inner">
-          <p>Every few weeks, or after returning from a long break, run the skill in <code>check</code> mode for a deep staleness audit.</p>
-          <div class="cmd prompt">Run external-memory skill check</div>
+          <p>Every few weeks, or after returning from a long break, run the skill in <code class="inline">check</code> mode for a deep staleness audit.</p>
+
+          <div class="cmd prompt">Run external-memory skill in check mode.<button class="copy-btn">Copy</button></div>
+
           <div class="sub-label">What it surfaces</div>
           <ul>
             <li>PROGRESS.md entries older than 30 days</li>
             <li>PLAN.md items pointing at files that no longer exist</li>
             <li>VERIFY.md commands that reference missing binaries or scripts</li>
             <li>Tech-stack drift between AGENTS.md and actual dependencies</li>
-            <li>Dangling <code>Next:</code> items that never made it to PLAN.md</li>
+            <li>Dangling <code class="inline">Next:</code> items that never made it to PLAN.md</li>
           </ul>
-          <div class="callout"><strong>Doesn't auto-fix.</strong> Surfaces findings as a numbered list and asks before changing anything. The judgment stays with you.</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- STEP 10 -->
+  <!-- STEP 9 -->
   <div class="step phase-maintain">
-    <div class="step-marker">10</div>
+    <div class="step-marker">09</div>
     <div class="step-card">
       <div class="step-header">
         <div class="step-title-block">
-          <div class="step-phase">Maintain · Deploy</div>
-          <div class="step-title">Ship to VPS with the deploy ritual</div>
-          <div class="step-summary">Same pattern across every project.</div>
+          <div class="step-phase">Maintain · Ship</div>
+          <div class="step-title">Run ship-check, then deploy</div>
+          <div class="step-summary">No deploy without a passing gate.</div>
         </div>
         <div class="step-toggle"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
       </div>
       <div class="step-body">
         <div class="step-body-inner">
-          <p>Standardize the deployment pattern in a <code>docs/deploy.md</code> and reference it from AGENTS.md. The proven D-Link MEA pattern:</p>
-          <div class="sub-label">VPS path convention</div>
-          <div class="cmd note">/opt/&lt;project-name&gt;</div>
-          <div class="sub-label">Service layout</div>
+          <p>Two layers of pre-deploy verification: the design audit (<code class="inline">impeccable</code>, covered in the UI/UX section) audits the design itself, while the <code class="inline">/ship-check</code> slash command audits the implementation.</p>
+
+          <div class="sub-label">The ship-check ritual</div>
+          <p>A slash command at <code class="inline">.claude/commands/ship-check.md</code> that runs:</p>
           <ul>
-            <li>systemd service for the Flask/Gunicorn process</li>
-            <li>Nginx reverse proxy with Let's Encrypt</li>
-            <li>Environment vars via systemd <code>EnvironmentFile</code>, never committed</li>
-            <li>SQLite under <code>/opt/&lt;project&gt;/data/</code> with nightly backup cron</li>
+            <li><strong>Responsive screenshots</strong> at 375px, 768px, and 1440px via Playwright MCP. Flags visible breakage.</li>
+            <li><strong>Accessibility scan</strong> via axe-core on each key page. Reports serious/critical violations.</li>
+            <li><strong>Lighthouse audit</strong> (for web projects) flagging any category below 80 — or 90 for public-facing sites.</li>
+            <li><strong>VERIFY.md pre-commit section</strong> — every command in it must pass.</li>
+            <li>A single PASS/FAIL report. If FAIL, deploy stops.</li>
           </ul>
-          <div class="sub-label">Pre-deploy gate</div>
-          <p>Run every command in VERIFY.md's Pre-commit section. If anything fails, deploy stops.</p>
-          <div class="callout"><strong>If on-prem is in play:</strong> Docker Compose is the abstraction that makes both targets work from the same repo. Hostinger pulls the same image on-prem would.</div>
+
+          <div class="sub-label">Copy-paste prompt to create /ship-check</div>
+          <div class="cmd prompt">Create a custom slash command for this project called ship-check.
+
+Steps:
+1. Create the folder .claude/commands/ if it doesn't exist
+2. Create the file .claude/commands/ship-check.md
+3. Inside the file, write a prompt that does the following
+   when /ship-check is invoked:
+
+   a) Take responsive screenshots at 375px, 768px, and 1440px
+      using Playwright MCP, against pages listed in VERIFY.md
+   b) Run axe-core accessibility scans on the same pages,
+      flagging serious and critical violations
+   c) Run Lighthouse (for web projects), failing if any
+      category drops below 80 for internal tools or 90 for
+      public-facing sites (read docs/PRD.md to determine which)
+   d) Run every command in VERIFY.md's Pre-commit section
+   e) Output a single Markdown report to /tmp/ship-check.md
+      with a clear PASS/FAIL verdict
+   f) If FAIL, stop the deploy and list the top 3 fixes needed
+
+4. Add a one-line description at the top of the file so it
+   shows up in the slash menu
+
+After creating the file, remind me to restart the session so
+/ship-check becomes available.<button class="copy-btn">Copy</button></div>
+
+          <div class="sub-label">The universal deploy pieces — regardless of stack</div>
+          <ul>
+            <li><strong>Pre-deploy gate</strong> — ship-check must pass</li>
+            <li><strong>Environment variables</strong> — never committed. Documented in <code class="inline">docs/deploy.md</code>.</li>
+            <li><strong>Rollback command</strong> — defined and tested before you need it</li>
+            <li><strong>Health check</strong> — a single command or URL that confirms the deploy worked</li>
+          </ul>
         </div>
       </div>
     </div>
@@ -878,48 +1621,504 @@
 
 </div>
 
+<!-- UI/UX DESIGN SECTION -->
+<section class="design-section">
+  <div class="section-header">
+    <div class="section-title">UI / UX Design</div>
+    <p class="section-sub">Four design skills, each with a defined role. The Design Language committed in the PRD is the reference point every skill below works from.</p>
+  </div>
+
+  <div class="design-flow">
+    <div class="design-row">
+      <div class="design-phase">01 · Direction</div>
+      <div class="design-skill">(PRD Design Language)<span class="source-note">decided in step 2</span></div>
+      <div class="design-trigger">Aesthetic decided in Step 2 alongside the tech stack. Named direction + 3 reference adjectives. Every skill below points here.</div>
+    </div>
+    <div class="design-row">
+      <div class="design-phase">02 · Prototype</div>
+      <div class="design-skill"><a href="https://github.com/anthropics/skills/tree/main/skills/frontend-design" target="_blank" rel="noopener">front-end-design</a><span class="source-note">anthropic · official</span></div>
+      <div class="design-trigger">First working version of any <em>app interface</em>. Sets layout and basic styling. The fastest way to get something on screen.</div>
+    </div>
+    <div class="design-row">
+      <div class="design-phase">03 · Marketing</div>
+      <div class="design-skill"><a href="https://github.com/nexu-io/open-design" target="_blank" rel="noopener">open-design</a><span class="source-note">nexu-io · community</span></div>
+      <div class="design-trigger">Landing pages, hero sections, marketing-driven external surfaces. Owns anything where the audience is <em>visitors</em> rather than <em>users</em>.</div>
+    </div>
+    <div class="design-row">
+      <div class="design-phase">04 · Refine</div>
+      <div class="design-skill"><a href="https://github.com/nextlevelbuilder/ui-ux-pro-max-skill" target="_blank" rel="noopener">ui-ux-pro-max</a><span class="source-note">nextlevelbuilder · community</span></div>
+      <div class="design-trigger">After layout is approved. Applies the Design Language, theme, micro-interactions, and visual identity. Most of the visual polish happens here.</div>
+    </div>
+    <div class="design-row gate">
+      <div class="design-phase">05 · Audit (gate)</div>
+      <div class="design-skill"><a href="https://github.com/pbakaus/impeccable" target="_blank" rel="noopener">impeccable</a><span class="source-note">pbakaus · community</span></div>
+      <div class="design-trigger">Pre-ship design audit. Runs before every release — not occasionally. Pair with <code class="inline">/ship-check</code> from Step 9 (which audits the <em>implementation</em>). Different layers; both required.</div>
+    </div>
+  </div>
+
+  <div class="callout"><strong>Clear handoff rules:</strong> open-design owns marketing surfaces; front-end-design owns app interfaces; ui-ux-pro-max takes over once layout is approved; impeccable runs as the design gate before ship. This removes the "which skill do I use here?" friction.</div>
+
+  <div class="sub-label" style="margin-top:28px;">Sample Design Language entries from past projects</div>
+  <div class="cmd note">Threat dashboard    → "Professional futuristic, glass morphism + neon accents"
+Compliance portal   → "Utilitarian dark, dense data tables, Bloomberg-adjacent"
+Bulk mailer         → "Bootstrap 5 dark, minimal chrome, function over form"
+Public website      → "Premium modern, generous whitespace, editorial type"<button class="copy-btn">Copy</button></div>
+</section>
+
+<!-- REFERENCE STACKS -->
+<section class="reference">
+  <div class="section-header">
+    <div class="section-title">Reference stacks</div>
+    <p class="section-sub">Examples of what the workflow has produced — not defaults. Each project gets its own stack decision in the PRD.</p>
+  </div>
+  <div class="stack-grid">
+
+    <div class="stack-card">
+      <div class="stack-name">Internal tool</div>
+      <div class="stack-use">Internal dashboards, automation, line-of-business utilities</div>
+      <div class="stack-row"><span class="stack-row-label">Language</span><span class="stack-row-val">Python</span></div>
+      <div class="stack-row"><span class="stack-row-label">Framework</span><span class="stack-row-val">Flask</span></div>
+      <div class="stack-row"><span class="stack-row-label">Database</span><span class="stack-row-val">SQLite</span></div>
+      <div class="stack-row"><span class="stack-row-label">Auth</span><span class="stack-row-val">Session + Werkzeug</span></div>
+      <div class="stack-row"><span class="stack-row-label">Hosting</span><span class="stack-row-val">Hostinger VPS</span></div>
+      <div class="stack-row"><span class="stack-row-label">Process</span><span class="stack-row-val">systemd + Gunicorn</span></div>
+      <div class="stack-row"><span class="stack-row-label">Reverse proxy</span><span class="stack-row-val">Nginx + Let's Encrypt</span></div>
+      <div class="stack-row"><span class="stack-row-label">Path convention</span><span class="stack-row-val">/opt/&lt;project&gt;</span></div>
+
+      <div class="stack-why">
+        <div class="stack-why-label">Why this stack</div>
+        <ul>
+          <li><strong>Simpler mental model.</strong> One language, one process, one file for the database. No build step, no hydration, no client/server split.</li>
+          <li><strong>SQLite is enough.</strong> Internal tools rarely exceed 100 concurrent users. SQLite handles that easily, no separate database service to install, secure, or back up. Backup is a file copy.</li>
+          <li><strong>Faster to v1.</strong> Empty repo to deployed in a couple of hours. No auth setup, no ORM config, no deployment dashboard.</li>
+          <li><strong>Cheap to run.</strong> Runs comfortably on a low-tier VPS. No managed-database monthly bill.</li>
+          <li><strong>Easy to debug.</strong> Python tracebacks point at the actual problem. No "is it server or client?" confusion.</li>
+          <li><strong>Mature for AI-assisted dev.</strong> 15+ years of Flask patterns. LLMs write idiomatic Flask reliably.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="stack-card">
+      <div class="stack-name">Public web app</div>
+      <div class="stack-use">Marketing sites, content-heavy apps, SEO-driven projects</div>
+      <div class="stack-row"><span class="stack-row-label">Language</span><span class="stack-row-val">TypeScript</span></div>
+      <div class="stack-row"><span class="stack-row-label">Framework</span><span class="stack-row-val">Next.js</span></div>
+      <div class="stack-row"><span class="stack-row-label">Database</span><span class="stack-row-val">Postgres</span></div>
+      <div class="stack-row"><span class="stack-row-label">ORM</span><span class="stack-row-val">Prisma or Drizzle</span></div>
+      <div class="stack-row"><span class="stack-row-label">Hosting</span><span class="stack-row-val">Vercel or VPS</span></div>
+      <div class="stack-row"><span class="stack-row-label">Process</span><span class="stack-row-val">Node + PM2 (on VPS)</span></div>
+      <div class="stack-row"><span class="stack-row-label">Reverse proxy</span><span class="stack-row-val">Vercel edge / Nginx</span></div>
+      <div class="stack-row"><span class="stack-row-label">Type safety</span><span class="stack-row-val">End-to-end</span></div>
+
+      <div class="stack-why">
+        <div class="stack-why-label">Why this stack</div>
+        <ul>
+          <li><strong>SEO is first-class.</strong> Server-side rendering, metadata APIs, sitemap generation — public sites need this and Next.js delivers it out of the box.</li>
+          <li><strong>Built for public traffic.</strong> Edge rendering, ISR, image optimization, automatic code splitting. Performs well under real load without manual tuning.</li>
+          <li><strong>Postgres handles real scale.</strong> Concurrent writes, full-text search, JSON queries, replication. SQLite serializes writes and falls over at scale.</li>
+          <li><strong>Type safety end-to-end.</strong> TypeScript from the database (via Prisma/Drizzle) through the UI catches whole classes of bugs at compile time. Pays off as the codebase grows.</li>
+          <li><strong>Rich UI ceiling.</strong> React beats server-rendered templates when the interface needs to be highly interactive — real-time updates, complex forms, drag-and-drop.</li>
+          <li><strong>CDN-friendly.</strong> Designed for global edge deployment. Critical when users span multiple regions.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="switch-note">
+    <div class="switch-note-title">When to switch sides</div>
+    <div class="switch-note-grid">
+      <div class="switch-col">
+        <div class="switch-col-label">Internal tool → upgrade path before rewriting</div>
+        <ul>
+          <li><strong>SQLite → Postgres:</strong> first stop. Swap the database, keep Flask. Handles 1000+ concurrent users.</li>
+          <li>Reach for Next.js only if: UI needs to be highly interactive (real-time, complex state)</li>
+          <li>Or: the team already knows TypeScript better than Python</li>
+          <li>Or: compliance demands audit-grade DB with replication and Postgres alone isn't enough</li>
+          <li>A full rewrite is rarely the right answer for "more users" — upgrade the database first.</li>
+        </ul>
+      </div>
+      <div class="switch-col">
+        <div class="switch-col-label">Public app → reach for Flask/FastAPI if</div>
+        <ul>
+          <li>It's an API-only service with no UI</li>
+          <li>Backend does heavy data processing (pandas, ML, scientific)</li>
+          <li>Sitting behind a Next.js frontend as a microservice</li>
+          <li>The team has deep Python expertise and no TypeScript</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <p style="margin-top:24px;font-size:13px;color:var(--muted);font-family:'JetBrains Mono',monospace;letter-spacing:0.02em;">Other stacks (Go, Rust, FastAPI, SvelteKit, static sites) follow the same workflow — only the deployment ritual changes.</p>
+</section>
+
+<!-- ARTIFACT SAMPLES -->
+<section class="samples">
+  <div class="section-header">
+    <div class="section-title">What good output looks like</div>
+    <p class="section-sub">Short examples of the artifacts the workflow produces. Useful as a reference when something the LLM generates doesn't quite feel right.</p>
+  </div>
+
+  <div class="sample-card">
+    <div class="sample-header">
+      <div class="sample-file">docs/PRD.md</div>
+      <div class="sample-desc">Tech Stack section — what good reasoning looks like</div>
+      <div class="sample-toggle"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+    </div>
+    <div class="sample-body">
+      <div class="sample-body-inner">
+        <pre>## Tech Stack
+
+**Recommendation:** Python + Flask + SQLite, deployed to Hostinger VPS.
+
+**Reasoning:**
+
+- Expected users: 8 to 12 internal staff across 3 country offices.
+  Concurrent writes will rarely exceed 5. SQLite handles this easily.
+- No public-facing requirement. SEO and edge rendering are not needed,
+  which removes the main reasons to choose Next.js.
+- The team is more comfortable with Python than TypeScript. Choosing
+  Flask shortens the path to v1 by an estimated 2-3 weeks.
+- Auth requirements are simple (internal SSO via existing IdP).
+  Session-based auth with Werkzeug covers this.
+
+**Alternatives considered:**
+
+- Next.js + Postgres: rejected for v1 due to over-engineering for the
+  user count. Worth revisiting if scope expands to external partners.
+- Django: rejected because the admin UI it provides isn't needed and
+  the framework overhead doesn't pay off at this scale.
+
+**Decisions for Mike to weigh in on:**
+
+- Should we use Postgres instead of SQLite from day one to make a
+  future migration easier? My recommendation: no, SQLite is fine.
+- Should we plan for Docker now? My recommendation: yes if on-prem
+  deployment is a realistic future, no if Hostinger is final.</pre>
+        <p class="sample-note">Good signals: specific numbers, explicit alternatives, named trade-offs, and questions back to the user. A bad PRD section says only "Python + Flask, because it's simple."</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sample-card">
+    <div class="sample-header">
+      <div class="sample-file">AGENTS.md</div>
+      <div class="sample-desc">Project conventions section — concrete, not vague</div>
+      <div class="sample-toggle"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+    </div>
+    <div class="sample-body">
+      <div class="sample-body-inner">
+        <pre>## Conventions
+
+**Writing style (applies to all generated text — commits, docs, emails):**
+- Plain English. No em dashes or en dashes under any circumstances.
+- Dates expressed with "to" not hyphens (e.g. "2024 to 2026").
+- No language that sounds AI-generated.
+
+**Code style:**
+- Python: ruff for linting, black for formatting, line length 100.
+- Routes in src/routes/, one file per feature area.
+- Database access goes through src/db.py — no direct SQL elsewhere.
+- Environment variables read once at startup via src/config.py.
+
+**Commit messages:**
+- Format: type(scope): description
+- Types: feat, fix, docs, refactor, chore, test
+- Example: feat(auth): add session timeout after 30 minutes idle
+
+**Things to never do:**
+- Never commit .env files or any file matching .env.*
+- Never disable the pre-commit secret guard
+- Never use SQLite WAL mode without checking with Mike first</pre>
+        <p class="sample-note">Good signals: specific rules with examples, not principles. A bad AGENTS.md says "write clean code" or "follow best practices." This one tells the agent exactly what to do.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sample-card">
+    <div class="sample-header">
+      <div class="sample-file">PROGRESS.md</div>
+      <div class="sample-desc">One session's entry — written at session close, not weeks later</div>
+      <div class="sample-toggle"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+    </div>
+    <div class="sample-body">
+      <div class="sample-body-inner">
+        <pre>## 2026-05-22 · Session 14
+
+**Done:**
+- Added session timeout (30 min idle) in src/auth.py
+- Migrated user table to include last_active_at timestamp
+- Wrote 4 tests for session expiry edge cases (all passing)
+- Fixed bug where /logout didn't clear the session cookie on Safari
+
+**In progress:**
+- Email notification when a session is forcibly ended
+
+**Next:** Wire up the email send via the existing SMTP relay
+configured for the bulk mailer. See src/mailer.py for the pattern.
+
+**Notes for future me:**
+- Safari's cookie handling for SameSite=Lax is stricter than Chrome's.
+  If session cookies misbehave in future, check Safari first.
+- The session timeout uses a server-side check, not a JS timer.
+  Don't add a JS timer — it'll race condition.</pre>
+        <p class="sample-note">Good signals: specific files touched, the single "Next:" pointer, and "Notes for future me" capturing tribal knowledge. A bad PROGRESS.md entry says "worked on auth stuff" with no specifics.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sample-card">
+    <div class="sample-header">
+      <div class="sample-file">VERIFY.md</div>
+      <div class="sample-desc">The exact commands that prove the project works</div>
+      <div class="sample-toggle"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+    </div>
+    <div class="sample-body">
+      <div class="sample-body-inner">
+        <pre># VERIFY
+
+## Key pages
+- /
+- /dashboard
+- /settings
+
+## Start command
+flask run --debug
+
+## Pre-commit (must all pass before commit)
+- ruff check src/
+- black --check src/
+- pytest tests/ -x
+- python -m scripts.check_migrations
+
+## Pre-deploy (must all pass before shipping)
+- All Pre-commit checks above
+- /ship-check  (see Step 9)
+- Manual: visit /healthz on the deployed instance and confirm 200 OK
+- Manual: log in as a test user and click through the 3 key pages
+
+## Smoke tests
+- curl -f http://localhost:5000/healthz  → expects "ok"
+- curl -f http://localhost:5000/api/version → expects JSON with current commit SHA</pre>
+        <p class="sample-note">Good signals: observable commands with clear pass/fail criteria, not aspirational descriptions. A bad VERIFY.md says "make sure the app works." This one tells you exactly what to run and what success looks like.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sample-card">
+    <div class="sample-header">
+      <div class="sample-file">PLAN.md</div>
+      <div class="sample-desc">What's coming next — short, current, actionable</div>
+      <div class="sample-toggle"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+    </div>
+    <div class="sample-body">
+      <div class="sample-body-inner">
+        <pre># PLAN
+
+## Now (this week)
+- [x] Session timeout implementation
+- [x] Safari cookie bug fix
+- [ ] Email notification on session end
+- [ ] Add session listing in /settings
+
+## Next (after current)
+- [ ] Two-factor auth via email OTP
+- [ ] Audit log of login/logout events
+- [ ] Password reset flow
+
+## Later (parked, not committed)
+- Migrate auth to external IdP (waiting on IT decision)
+- Mobile-optimized login screen (waiting on design)
+
+## Blocked
+- None right now</pre>
+        <p class="sample-note">Good signals: three time horizons, no infinite backlog, "Blocked" called out so it doesn't get forgotten. A bad PLAN.md is a 40-item dump that hasn't been pruned in months.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- PRINCIPLES -->
 <section class="principles">
-  <div class="principles-header">
-    <div class="principles-title">Operating principles</div>
-    <p class="subtitle" style="margin:0;">Defaults that make the workflow worth the discipline.</p>
+  <div class="section-header">
+    <div class="section-title">Operating principles</div>
+    <p class="section-sub">Defaults that make the workflow worth the discipline.</p>
   </div>
   <div class="principles-grid">
     <div class="principle">
       <div class="principle-num">01</div>
-      <div class="principle-title">Docs before code</div>
-      <div class="principle-text">Brainstorm, PRD, and folder structure all exist as documents before a single route is written.</div>
+      <div class="principle-title">Stack is an output, not an input</div>
+      <div class="principle-text">The PRD decides the stack based on the project's real requirements. The workflow doesn't favor any framework.</div>
     </div>
     <div class="principle">
       <div class="principle-num">02</div>
+      <div class="principle-title">Design language is decided in the PRD</div>
+      <div class="principle-text">Aesthetic direction is locked alongside the tech stack. Every design skill points at it instead of starting from scratch.</div>
+    </div>
+    <div class="principle">
+      <div class="principle-num">03</div>
+      <div class="principle-title">Docs before code</div>
+      <div class="principle-text">Brainstorm, PRD, and folder structure all exist as documents before a single feature is written.</div>
+    </div>
+    <div class="principle">
+      <div class="principle-num">04</div>
       <div class="principle-title">Canonical, not duplicated</div>
       <div class="principle-text">AGENTS.md is the source of truth. CLAUDE.md and GEMINI.md are three-line pointers. Never duplicate.</div>
     </div>
     <div class="principle">
-      <div class="principle-num">03</div>
+      <div class="principle-num">05</div>
       <div class="principle-title">Update at the boundary</div>
       <div class="principle-text">PROGRESS.md gets updated at the end of every session — not weeks later when memory has faded.</div>
     </div>
     <div class="principle">
-      <div class="principle-num">04</div>
+      <div class="principle-num">06</div>
+      <div class="principle-title">Responsive and accessible by default</div>
+      <div class="principle-text">Ship-check runs before every deploy, covering responsive layout, accessibility, and Lighthouse scores. Catching issues at the gate is cheaper than catching them in production.</div>
+    </div>
+    <div class="principle">
+      <div class="principle-num">07</div>
       <div class="principle-title">Verify, don't assume</div>
       <div class="principle-text">VERIFY.md exists so that "it works" is observable. Every project ships with exact commands that prove it.</div>
     </div>
     <div class="principle">
-      <div class="principle-num">05</div>
-      <div class="principle-title">Skills earn their place</div>
-      <div class="principle-text">A skill exists when a ritual repeats with non-obvious logic. Otherwise it's premature optimization.</div>
+      <div class="principle-num">08</div>
+      <div class="principle-title">Capture the ritual as a command</div>
+      <div class="principle-text">If you find yourself typing the same instruction often, save it as a slash command. One markdown file in <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">.claude/commands/</code>, available to every AI assistant in VS Code.</div>
     </div>
     <div class="principle">
-      <div class="principle-num">06</div>
+      <div class="principle-num">09</div>
       <div class="principle-title">Plain English, always</div>
       <div class="principle-text">No em dashes, no en dashes. Concise writing for senior stakeholders. Language that doesn't sound AI-generated.</div>
+    </div>
+    <div class="principle">
+      <div class="principle-num">10</div>
+      <div class="principle-title">Containerize when in doubt</div>
+      <div class="principle-text">If a project might move between VPS, on-prem, or edge, Docker is the abstraction that makes one repo work everywhere.</div>
+    </div>
+  </div>
+</section>
+
+<!-- GLOSSARY -->
+<section class="glossary">
+  <div class="section-header">
+    <div class="section-title">Glossary</div>
+    <p class="section-sub">Short definitions for the terms used throughout this workflow. Scan it if something earlier on the page felt opaque.</p>
+  </div>
+
+  <div class="glossary-intro"><strong>When to read this:</strong> only if a term above didn't make sense. This is a reference, not required reading. Italicized terms are <span class="xref">cross-references</span> to other entries here.</div>
+
+  <div class="glossary-group">
+    <div class="glossary-group-label">AI tooling</div>
+    <div class="glossary-grid">
+      <dl class="glossary-term">
+        <dt>MCP (Model Context Protocol)</dt>
+        <dd>A standard for connecting AI assistants to external tools and data. An MCP server (like Hostinger, GitHub, or Playwright) gives Claude or Codex the ability to interact with that service directly from a chat.</dd>
+      </dl>
+      <dl class="glossary-term">
+        <dt>Skill</dt>
+        <dd>A reusable instruction set that teaches an AI assistant how to do something specific. Lives in a folder (e.g. <code>.claude/skills/&lt;name&gt;/SKILL.md</code>) and gets triggered automatically when the AI detects a matching context.</dd>
+      </dl>
+      <dl class="glossary-term">
+        <dt>Slash command</dt>
+        <dd>A custom shortcut you invoke by typing <code>/name</code> in your AI chat. The command's logic lives in a single markdown file at <code>.claude/commands/&lt;name&gt;.md</code>. Simpler than a <span class="xref">skill</span> — one file, no folder.</dd>
+      </dl>
+      <dl class="glossary-term">
+        <dt>AGENTS.md</dt>
+        <dd>The canonical project context file that AI assistants read on every session. Contains stack info, conventions, and rules. Both Claude and Codex read it by default; <code>CLAUDE.md</code> and <code>GEMINI.md</code> can be three-line pointer files that redirect to it.</dd>
+      </dl>
+      <dl class="glossary-term">
+        <dt>Plan mode</dt>
+        <dd>A Claude Code feature (Shift+Tab to toggle) where the AI proposes a plan before executing anything. Used in Step 1 for brainstorming without the AI jumping straight to code.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="glossary-group">
+    <div class="glossary-group-label">Workflow files</div>
+    <div class="glossary-grid">
+      <dl class="glossary-term">
+        <dt>PRD (Product Requirements Document)</dt>
+        <dd>A short doc that defines what a project is, who it's for, what's in scope, and what stack will build it. Generated in Step 2. Becomes the single source of truth that downstream steps read from.</dd>
+      </dl>
+      <dl class="glossary-term">
+        <dt>VERIFY.md</dt>
+        <dd>The exact commands that prove a project works — start command, smoke tests, pre-commit checks, pre-deploy checks. Created by the <span class="xref">external-memory skill</span> and run by <code>/ship-check</code>.</dd>
+      </dl>
+      <dl class="glossary-term">
+        <dt>PROGRESS.md</dt>
+        <dd>A dated log of what got done in each session. Updated at session close by the external-memory skill in <code>update</code> mode. Gives cold-start sessions full context in seconds.</dd>
+      </dl>
+      <dl class="glossary-term">
+        <dt>PLAN.md</dt>
+        <dd>What's coming next on the project, organized as Now / Next / Later / Blocked. Pruned regularly so it stays under a dozen items.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="glossary-group">
+    <div class="glossary-group-label">Stack &amp; framework terms</div>
+    <div class="glossary-grid">
+      <dl class="glossary-term">
+        <dt>ORM (Object-Relational Mapper)</dt>
+        <dd>A library that lets you query a database using your programming language instead of raw SQL. Prisma and Drizzle are the two common choices for TypeScript projects.</dd>
+      </dl>
+      <dl class="glossary-term">
+        <dt>ISR (Incremental Static Regeneration)</dt>
+        <dd>A Next.js feature that serves pre-rendered pages but refreshes them in the background on a schedule. Gives static-site speed with fresh content.</dd>
+      </dl>
+      <dl class="glossary-term">
+        <dt>Edge rendering</dt>
+        <dd>Serving content from CDN locations geographically close to the user instead of one central server. Much faster for global audiences. Built into Vercel and Cloudflare.</dd>
+      </dl>
+      <dl class="glossary-term">
+        <dt>WAL mode (Write-Ahead Logging)</dt>
+        <dd>A SQLite configuration that allows concurrent reads while a write is happening. Makes SQLite usable for slightly higher-traffic apps, but has its own gotchas — don't enable without testing.</dd>
+      </dl>
+      <dl class="glossary-term">
+        <dt>Container / Docker</dt>
+        <dd>A way to package a project so it runs identically anywhere — local laptop, VPS, on-prem server. The <code>Dockerfile</code> defines the package; <code>docker-compose.yml</code> runs it. Key for projects that might move between hosting environments.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="glossary-group">
+    <div class="glossary-group-label">Deployment &amp; tooling</div>
+    <div class="glossary-grid">
+      <dl class="glossary-term">
+        <dt>gh CLI</dt>
+        <dd>GitHub's command-line tool. Lets you create repos, manage PRs, and authenticate from the terminal. Step 3 uses it to create a private repo and push automatically.</dd>
+      </dl>
+      <dl class="glossary-term">
+        <dt>systemd</dt>
+        <dd>The standard Linux service manager. Used on VPS deployments to keep a Flask/Gunicorn process running, auto-restart on crash, and start on boot.</dd>
+      </dl>
+      <dl class="glossary-term">
+        <dt>PM2</dt>
+        <dd>A Node.js process manager. Same job as systemd but for Node apps — keeps the Next.js server running, restarts on crash, manages logs. Used when deploying Next.js to a VPS instead of Vercel.</dd>
+      </dl>
+      <dl class="glossary-term">
+        <dt>Reverse proxy</dt>
+        <dd>A server that sits in front of your app and routes incoming requests. Nginx is the standard choice — handles HTTPS, caching, and routing multiple apps on one VPS. Lets you run several projects on different subdomains from the same machine.</dd>
+      </dl>
+      <dl class="glossary-term">
+        <dt>Playwright</dt>
+        <dd>A browser automation library. The Playwright MCP lets AI assistants take screenshots, run interactions, and test pages. Used by <code>/ship-check</code> for responsive testing.</dd>
+      </dl>
+      <dl class="glossary-term">
+        <dt>axe-core / Lighthouse</dt>
+        <dd>Two automated quality tools. axe-core scans pages for accessibility violations (contrast, missing labels, etc). Lighthouse scores performance, SEO, best practices, and accessibility. Both run inside <code>/ship-check</code>.</dd>
+      </dl>
+      <dl class="glossary-term">
+        <dt>gitleaks</dt>
+        <dd>A pre-commit hook that scans for secrets (API keys, tokens, passwords) before they get committed. Once installed, it blocks any commit containing a detected secret. Strongly recommended for any repo that might go to a public host.</dd>
+      </dl>
     </div>
   </div>
 </section>
 
 <footer>
-  <div>Mike's AI Projects Workflow · v1 · 2026</div>
+  <div>Mike's AI Projects Workflow · v3.5 · 2026</div>
   <div>Built on <a href="https://github.com/mcruzae/claude-external-memory">claude-external-memory</a></div>
 </footer>
 
@@ -929,7 +2128,8 @@
   const steps = document.querySelectorAll('.step');
   steps.forEach(step => {
     const header = step.querySelector('.step-header');
-    header.addEventListener('click', () => {
+    header.addEventListener('click', (e) => {
+      if (e.target.closest('.copy-btn')) return;
       step.classList.toggle('open');
     });
   });
@@ -942,7 +2142,30 @@
     steps.forEach(s => s.classList.remove('open'));
   });
 
-  // Open first step by default on first load
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const cmd = btn.closest('.cmd');
+      const text = cmd.textContent.replace('Copy', '').trim();
+      navigator.clipboard.writeText(text).then(() => {
+        btn.textContent = 'Copied';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'Copy';
+          btn.classList.remove('copied');
+        }, 1500);
+      });
+    });
+  });
+
+  // Sample cards
+  document.querySelectorAll('.sample-card').forEach(card => {
+    const header = card.querySelector('.sample-header');
+    header.addEventListener('click', () => {
+      card.classList.toggle('open');
+    });
+  });
+
   steps[0].classList.add('open');
 </script>
 
