@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mike's AI Projects Workflow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500;600&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --cream: #f4f0e8;
+    --cream-deep: #ebe5d6;
+    --cream-line: #d9d2bf;
+    --ink: #1a1a1a;
+    --ink-soft: #2a2a2a;
+    --muted: #6b6358;
+    --orange: #d97757;
+    --orange-deep: #c0623e;
+    --orange-soft: #e89578;
+    --shadow: 0 1px 0 rgba(26, 26, 26, 0.04), 0 8px 24px -8px rgba(26, 26, 26, 0.08);
+    --shadow-lift: 0 2px 0 rgba(26, 26, 26, 0.06), 0 24px 48px -16px rgba(26, 26, 26, 0.18);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Inter Tight', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* grain texture overlay */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.4;
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.1 0 0 0 0 0.1 0 0 0 0.08 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  .container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 64px 32px 96px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* header */
+  header {
+    margin-bottom: 72px;
+    position: relative;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--orange-deep);
+    margin-bottom: 24px;
+    padding: 6px 12px;
+    background: rgba(217, 119, 87, 0.08);
+    border: 1px solid rgba(217, 119, 87, 0.18);
+    border-radius: 4px;
+  }
+
+  .eyebrow::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    background: var(--orange);
+    border-radius: 50%;
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    margin-bottom: 20px;
+    font-variation-settings: "opsz" 144;
+  }
+
+  h1 .italic {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--orange-deep);
+  }
+
+  .subtitle {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: clamp(18px, 2vw, 22px);
+    color: var(--muted);
+    max-width: 560px;
+    line-height: 1.4;
+  }
+
+  .meta {
+    margin-top: 32px;
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .meta span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .meta span::before {
+    content: "";
+    width: 4px;
+    height: 4px;
+    background: var(--ink);
+    border-radius: 50%;
+    opacity: 0.4;
+  }
+
+  /* legend */
+  .legend {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+    padding: 20px 24px;
+    background: var(--cream-deep);
+    border-radius: 12px;
+    border: 1px solid var(--cream-line);
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+
+  .legend-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .legend-dot.think { background: var(--ink); }
+  .legend-dot.scaffold { background: var(--orange); }
+  .legend-dot.build { background: var(--orange-soft); border: 2px solid var(--orange-deep); }
+  .legend-dot.maintain { background: var(--cream); border: 2px solid var(--ink); }
+
+  /* steps */
+  .timeline {
+    position: relative;
+  }
+
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 31px;
+    top: 32px;
+    bottom: 32px;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--cream-line) 8%, var(--cream-line) 92%, transparent);
+  }
+
+  .step {
+    position: relative;
+    padding-left: 80px;
+    margin-bottom: 16px;
+  }
+
+  .step-marker {
+    position: absolute;
+    left: 16px;
+    top: 18px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--cream);
+    border: 2px solid var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink);
+    z-index: 2;
+    transition: all 0.3s ease;
+  }
+
+  .step.phase-scaffold .step-marker {
+    background: var(--orange);
+    border-color: var(--orange-deep);
+    color: var(--cream);
+  }
+
+  .step.phase-build .step-marker {
+    background: var(--orange-soft);
+    border-color: var(--orange-deep);
+    color: var(--ink);
+  }
+
+  .step.phase-maintain .step-marker {
+    background: var(--cream);
+    border-color: var(--ink);
+  }
+
+  .step-card {
+    background: var(--cream-deep);
+    border: 1px solid var(--cream-line);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .step-card:hover {
+    border-color: var(--orange);
+    box-shadow: var(--shadow-lift);
+  }
+
+  .step.open .step-card {
+    box-shadow: var(--shadow-lift);
+    border-color: var(--orange);
+  }
+
+  .step-header {
+    padding: 22px 28px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    user-select: none;
+  }
+
+  .step-title-block { flex: 1; min-width: 0; }
+
+  .step-phase {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  .step-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 22px;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+
+  .step-summary {
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 4px;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  .step-toggle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--cream);
+    border: 1px solid var(--cream-line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+  }
+
+  .step-toggle svg {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    stroke: var(--ink);
+  }
+
+  .step.open .step-toggle {
+    background: var(--orange);
+    border-color: var(--orange-deep);
+  }
+
+  .step.open .step-toggle svg {
+    transform: rotate(45deg);
+    stroke: var(--cream);
+  }
+
+  .step-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .step.open .step-body { max-height: 2400px; }
+
+  .step-body-inner {
+    padding: 0 28px 28px 28px;
+    border-top: 1px dashed var(--cream-line);
+    padding-top: 24px;
+    margin-top: 0;
+  }
+
+  .step-body p {
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  .step-body p strong { color: var(--ink); font-weight: 600; }
+
+  .step-body ul {
+    list-style: none;
+    margin-bottom: 16px;
+  }
+
+  .step-body li {
+    padding-left: 20px;
+    position: relative;
+    margin-bottom: 8px;
+    color: var(--ink-soft);
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  .step-body li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 8px;
+    height: 1px;
+    background: var(--orange);
+  }
+
+  /* code/command blocks */
+  .cmd {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    background: var(--ink);
+    color: var(--cream);
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin: 12px 0;
+    position: relative;
+    overflow-x: auto;
+    line-height: 1.5;
+  }
+
+  .cmd::before {
+    content: "$";
+    color: var(--orange-soft);
+    margin-right: 10px;
+    user-select: none;
+  }
+
+  .cmd.prompt::before {
+    content: "›";
+    color: var(--orange);
+  }
+
+  .cmd.note::before { content: ""; margin: 0; }
+
+  .cmd.note {
+    background: var(--cream);
+    color: var(--ink-soft);
+    border: 1px dashed var(--cream-line);
+    font-style: normal;
+  }
+
+  /* sub-sections */
+  .sub-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--orange-deep);
+    margin: 20px 0 8px;
+    font-weight: 600;
+  }
+
+  .sub-label:first-child { margin-top: 0; }
+
+  .callout {
+    background: var(--cream);
+    border-left: 3px solid var(--orange);
+    padding: 14px 18px;
+    border-radius: 0 8px 8px 0;
+    margin: 16px 0;
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+  }
+
+  .callout strong { color: var(--orange-deep); }
+
+  /* footer principles */
+  .principles {
+    margin-top: 80px;
+    padding: 48px 0 0;
+    border-top: 1px solid var(--cream-line);
+  }
+
+  .principles-header {
+    margin-bottom: 36px;
+  }
+
+  .principles-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-style: italic;
+    font-size: 32px;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+
+  .principles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+  }
+
+  .principle {
+    padding: 24px;
+    background: var(--cream-deep);
+    border: 1px solid var(--cream-line);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+  }
+
+  .principle:hover {
+    transform: translateY(-2px);
+    border-color: var(--orange);
+    box-shadow: var(--shadow);
+  }
+
+  .principle-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--orange-deep);
+    letter-spacing: 0.1em;
+    margin-bottom: 12px;
+  }
+
+  .principle-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 18px;
+    color: var(--ink);
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+
+  .principle-text {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* footer */
+  footer {
+    margin-top: 80px;
+    padding-top: 32px;
+    border-top: 1px solid var(--cream-line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+  }
+
+  footer a {
+    color: var(--orange-deep);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--orange);
+  }
+
+  footer a:hover { color: var(--orange); }
+
+  /* controls */
+  .controls {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    justify-content: flex-end;
+  }
+
+  .ctrl-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 8px 14px;
+    background: transparent;
+    border: 1px solid var(--cream-line);
+    border-radius: 6px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .ctrl-btn:hover {
+    color: var(--orange-deep);
+    border-color: var(--orange);
+    background: rgba(217, 119, 87, 0.04);
+  }
+
+  /* mobile */
+  @media (max-width: 640px) {
+    .container { padding: 40px 20px 64px; }
+    .step { padding-left: 56px; }
+    .timeline::before { left: 19px; }
+    .step-marker { left: 4px; width: 28px; height: 28px; font-size: 11px; }
+    .step-header { padding: 18px 20px; gap: 12px; }
+    .step-body-inner { padding: 0 20px 20px; padding-top: 20px; }
+    .step-title { font-size: 19px; }
+    h1 { font-size: 44px; }
+    .legend { padding: 16px; gap: 12px; }
+    .legend-item { font-size: 12px; }
+  }
+
+  /* print */
+  @media print {
+    body { background: white; }
+    body::before { display: none; }
+    .controls, .step-toggle { display: none; }
+    .step-body { max-height: none !important; }
+    .step-card { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div class="eyebrow">Personal Build System · v1</div>
+  <h1>Mike's AI Projects <span class="italic">Workflow</span></h1>
+  <p class="subtitle">A repeatable system for taking an internal tool from <em>idea</em> to <em>production</em> using Claude Code, Codex, and durable agent memory.</p>
+  <div class="meta">
+    <span>Made by Mike Cruz</span>
+    <span>Updated May 2026</span>
+    <span>Click any step to expand</span>
+  </div>
+</header>
+
+<div class="legend">
+  <div class="legend-item"><span class="legend-dot think"></span> Think</div>
+  <div class="legend-item"><span class="legend-dot scaffold"></span> Scaffold</div>
+  <div class="legend-item"><span class="legend-dot build"></span> Build</div>
+  <div class="legend-item"><span class="legend-dot maintain"></span> Maintain</div>
+</div>
+
+<div class="controls">
+  <button class="ctrl-btn" id="expandAll">Expand all</button>
+  <button class="ctrl-btn" id="collapseAll">Collapse all</button>
+</div>
+
+<div class="timeline">
+
+  <!-- STEP 1 -->
+  <div class="step phase-think">
+    <div class="step-marker">01</div>
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-title-block">
+          <div class="step-phase">Think · Diverge</div>
+          <div class="step-title">Brainstorm in plan mode</div>
+          <div class="step-summary">No folders. No code. Just thinking.</div>
+        </div>
+        <div class="step-toggle"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </div>
+      <div class="step-body">
+        <div class="step-body-inner">
+          <p>Use Claude's <strong>plan mode</strong> (Shift+Tab in Claude Code, or the app's planning interface) for divergent thinking. The goal here is to explore the problem space, not commit to it.</p>
+          <div class="sub-label">What to capture</div>
+          <ul>
+            <li>The actual problem this internal tool solves</li>
+            <li>Who uses it (D-Link MEA team, country offices, specific roles)</li>
+            <li>Adjacent tools or workflows it replaces or connects to</li>
+            <li>Constraints worth surfacing early (compliance, regional latency, on-prem vs VPS)</li>
+          </ul>
+          <div class="callout"><strong>Why no folders yet:</strong> committing to structure during brainstorming makes implicit architecture decisions. Flask vs FastAPI dictates one layout, static site another. Stay loose.</div>
+          <div class="sub-label">Output</div>
+          <p>A single file: <code style="background:var(--cream);padding:2px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:13px;">docs/brainstorm.md</code> — or just a saved chat thread.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step phase-think">
+    <div class="step-marker">02</div>
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-title-block">
+          <div class="step-phase">Think · Converge</div>
+          <div class="step-title">Generate the PRD / blueprint</div>
+          <div class="step-summary">Turn the brainstorm into a real spec.</div>
+        </div>
+        <div class="step-toggle"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </div>
+      <div class="step-body">
+        <div class="step-body-inner">
+          <p>Ask Claude to translate the brainstorm into a structured Product Requirements Document. This is where ambiguity gets killed.</p>
+          <div class="sub-label">Sections worth including</div>
+          <ul>
+            <li><strong>Problem</strong> — the one-paragraph reason this exists</li>
+            <li><strong>Users</strong> — specific roles, not "the team"</li>
+            <li><strong>Scope</strong> — what's in v1</li>
+            <li><strong>Non-goals</strong> — what's explicitly out (this saves the most time later)</li>
+            <li><strong>Success criteria</strong> — observable, not aspirational</li>
+            <li><strong>Deployment target</strong> — Hostinger VPS, on-prem, or undecided</li>
+            <li><strong>Tech constraints</strong> — Flask default, SQLite default, internal-only auth pattern</li>
+          </ul>
+          <div class="cmd prompt">Read docs/brainstorm.md and produce a PRD in docs/PRD.md following the sections: Problem, Users, Scope, Non-goals, Success Criteria, Deployment, Tech Constraints. Keep it under 2 pages.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step phase-scaffold">
+    <div class="step-marker">03</div>
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-title-block">
+          <div class="step-phase">Scaffold · Baseline</div>
+          <div class="step-title">git init + commit the docs</div>
+          <div class="step-summary">Clean baseline before any code exists.</div>
+        </div>
+        <div class="step-toggle"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </div>
+      <div class="step-body">
+        <div class="step-body-inner">
+          <p>Initialize the repo with only the planning docs. This gives a clean starting point you can always return to without losing the thinking work.</p>
+          <div class="cmd">git init</div>
+          <div class="cmd">git add docs/ && git commit -m "docs: brainstorm + PRD"</div>
+          <div class="callout"><strong>Add a pre-commit secret guard now</strong>, before any code exists. Tools like <code>gitleaks</code> or a simple regex pre-commit hook prevent <code>.env</code> leaks that are nearly impossible to scrub from history later.</div>
+          <div class="sub-label">Repo origin</div>
+          <p>Push to a private repo before writing code. Future-you wants the rollback option.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step phase-scaffold">
+    <div class="step-marker">04</div>
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-title-block">
+          <div class="step-phase">Scaffold · Structure</div>
+          <div class="step-title">Propose &amp; scaffold the folder structure</div>
+          <div class="step-summary">Ask Claude Code to derive it from the PRD.</div>
+        </div>
+        <div class="step-toggle"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </div>
+      <div class="step-body">
+        <div class="step-body-inner">
+          <p>Now structure earns its place — the PRD has settled the tech stack and components, so the folder layout follows naturally.</p>
+          <div class="cmd prompt">Read docs/PRD.md and propose a folder structure. Justify each top-level folder. Then scaffold it.</div>
+          <div class="sub-label">Typical layout for internal Flask tools</div>
+          <div class="cmd note">/src · /tests · /docs · /scripts · /static · /templates · .env.example · requirements.txt</div>
+          <div class="callout"><strong>Decide Docker now if on-prem is a possibility.</strong> A <code>docker-compose.yml</code> from day one means VPS-to-on-prem migration is a <code>git pull</code> and <code>docker compose up</code> — not a rebuild.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="step phase-scaffold">
+    <div class="step-marker">05</div>
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-title-block">
+          <div class="step-phase">Scaffold · Memory</div>
+          <div class="step-title">Invoke the external-memory skill</div>
+          <div class="step-summary">AGENTS.md becomes canonical. Cross-tool by design.</div>
+        </div>
+        <div class="step-toggle"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </div>
+      <div class="step-body">
+        <div class="step-body-inner">
+          <p>Run the <a style="color:var(--orange-deep);" href="https://github.com/mcruzae/claude-external-memory">claude-external-memory</a> skill in <code>init</code> mode. It reads the README, package files, and git log to produce a customized AGENTS.md, PLAN.md, PROGRESS.md, and VERIFY.md — plus pointer files for CLAUDE.md and GEMINI.md.</p>
+          <div class="sub-label">Why this beats /init</div>
+          <ul>
+            <li><strong>Cross-tool</strong> — Claude Code, Codex, and Gemini CLI all read the same canonical source</li>
+            <li><strong>Four files, four lifespans</strong> — norms, plan, log, and verification commands stay separate so they don't rot together</li>
+            <li><strong>VERIFY.md</strong> captures the exact commands that prove the project works — the part /init skips entirely</li>
+          </ul>
+          <div class="cmd prompt">Run external-memory skill init on this repo</div>
+          <div class="callout"><strong>Why invoke <em>after</em> scaffolding:</strong> the skill reads <code>package.json</code>, <code>requirements.txt</code>, and the README to seed the tech-stack table. Invoking before those exist produces stubs full of <code>_TODO_</code> markers.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 6 -->
+  <div class="step phase-scaffold">
+    <div class="step-marker">06</div>
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-title-block">
+          <div class="step-phase">Scaffold · Tooling</div>
+          <div class="step-title">Wire up MCP servers &amp; slash commands</div>
+          <div class="step-summary">Make agents project-aware from day one.</div>
+        </div>
+        <div class="step-toggle"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </div>
+      <div class="step-body">
+        <div class="step-body-inner">
+          <div class="sub-label">MCP servers to consider</div>
+          <ul>
+            <li><strong>Hostinger MCP</strong> — VPS state, disk, ports, services. Stops Claude from suggesting port 5000 when the mailer already owns it.</li>
+            <li><strong>Playwright MCP</strong> — UI smoke tests for internal dashboards</li>
+            <li><strong>Postgres / SQLite MCP</strong> — if the project has a database, let agents inspect schema directly</li>
+            <li><strong>GitHub MCP</strong> — for PR review and issue triage workflows</li>
+          </ul>
+          <div class="sub-label">Custom slash commands</div>
+          <p>Add a <code>.claude/commands/</code> folder with repeatable commands tuned to this project:</p>
+          <div class="cmd note">/add-feature  → scaffolded route + template + test stub<br>/review-pr    → walks recent diff against AGENTS.md conventions<br>/deploy       → runs verify checks then ships to VPS</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 7 -->
+  <div class="step phase-build">
+    <div class="step-marker">07</div>
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-title-block">
+          <div class="step-phase">Build · Iterate</div>
+          <div class="step-title">Vibe-code with Claude Code + Codex in parallel</div>
+          <div class="step-summary">Each tool has a different strength. Use both.</div>
+        </div>
+        <div class="step-toggle"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </div>
+      <div class="step-body">
+        <div class="step-body-inner">
+          <div class="sub-label">Division of labor</div>
+          <ul>
+            <li><strong>Claude Code</strong> — architecture, refactoring, code review, debugging the hairy stuff</li>
+            <li><strong>Codex</strong> — focused implementation tasks, test writing, boilerplate</li>
+            <li><strong>Cross-check pattern</strong> — Codex implements, Claude Code reviews against AGENTS.md conventions</li>
+          </ul>
+          <div class="sub-label">Branch per feature, even solo</div>
+          <div class="cmd">git switch -c feat/auth</div>
+          <p>Combined with <code>git worktree</code>, this lets you run parallel agent sessions on different features without context contamination.</p>
+          <div class="callout"><strong>Plain English, no em dashes, concise.</strong> Bake this into AGENTS.md so every drafting task — emails, docs, commit messages — defaults to your house style.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 8 -->
+  <div class="step phase-maintain">
+    <div class="step-marker">08</div>
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-title-block">
+          <div class="step-phase">Maintain · Session ritual</div>
+          <div class="step-title">End each session with update mode</div>
+          <div class="step-summary">Keep the memory fresh while it's cheap.</div>
+        </div>
+        <div class="step-toggle"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </div>
+      <div class="step-body">
+        <div class="step-body-inner">
+          <p>Before closing a session, run the external-memory skill in <code>update</code> mode. It surveys recent commits, drafts a PROGRESS.md entry, ticks PLAN.md items, and adds new VERIFY.md checks if needed.</p>
+          <div class="cmd prompt">Run external-memory skill update</div>
+          <div class="sub-label">What gets written</div>
+          <ul>
+            <li>A dated PROGRESS.md entry with one line per significant change</li>
+            <li>A <code>Next:</code> line pointing at the single most important next step</li>
+            <li>Updated checkboxes in PLAN.md</li>
+            <li>New smoke checks in VERIFY.md if endpoints or commands changed</li>
+          </ul>
+          <div class="callout"><strong>Cold-start payoff:</strong> when you return to this project in 3 weeks, the next session starts with full context in under 30 seconds. No re-explaining.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 9 -->
+  <div class="step phase-maintain">
+    <div class="step-marker">09</div>
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-title-block">
+          <div class="step-phase">Maintain · Drift audit</div>
+          <div class="step-title">Periodically run check mode</div>
+          <div class="step-summary">Surface staleness before it becomes a problem.</div>
+        </div>
+        <div class="step-toggle"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </div>
+      <div class="step-body">
+        <div class="step-body-inner">
+          <p>Every few weeks, or after returning from a long break, run the skill in <code>check</code> mode for a deep staleness audit.</p>
+          <div class="cmd prompt">Run external-memory skill check</div>
+          <div class="sub-label">What it surfaces</div>
+          <ul>
+            <li>PROGRESS.md entries older than 30 days</li>
+            <li>PLAN.md items pointing at files that no longer exist</li>
+            <li>VERIFY.md commands that reference missing binaries or scripts</li>
+            <li>Tech-stack drift between AGENTS.md and actual dependencies</li>
+            <li>Dangling <code>Next:</code> items that never made it to PLAN.md</li>
+          </ul>
+          <div class="callout"><strong>Doesn't auto-fix.</strong> Surfaces findings as a numbered list and asks before changing anything. The judgment stays with you.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 10 -->
+  <div class="step phase-maintain">
+    <div class="step-marker">10</div>
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-title-block">
+          <div class="step-phase">Maintain · Deploy</div>
+          <div class="step-title">Ship to VPS with the deploy ritual</div>
+          <div class="step-summary">Same pattern across every project.</div>
+        </div>
+        <div class="step-toggle"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </div>
+      <div class="step-body">
+        <div class="step-body-inner">
+          <p>Standardize the deployment pattern in a <code>docs/deploy.md</code> and reference it from AGENTS.md. The proven D-Link MEA pattern:</p>
+          <div class="sub-label">VPS path convention</div>
+          <div class="cmd note">/opt/&lt;project-name&gt;</div>
+          <div class="sub-label">Service layout</div>
+          <ul>
+            <li>systemd service for the Flask/Gunicorn process</li>
+            <li>Nginx reverse proxy with Let's Encrypt</li>
+            <li>Environment vars via systemd <code>EnvironmentFile</code>, never committed</li>
+            <li>SQLite under <code>/opt/&lt;project&gt;/data/</code> with nightly backup cron</li>
+          </ul>
+          <div class="sub-label">Pre-deploy gate</div>
+          <p>Run every command in VERIFY.md's Pre-commit section. If anything fails, deploy stops.</p>
+          <div class="callout"><strong>If on-prem is in play:</strong> Docker Compose is the abstraction that makes both targets work from the same repo. Hostinger pulls the same image on-prem would.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- PRINCIPLES -->
+<section class="principles">
+  <div class="principles-header">
+    <div class="principles-title">Operating principles</div>
+    <p class="subtitle" style="margin:0;">Defaults that make the workflow worth the discipline.</p>
+  </div>
+  <div class="principles-grid">
+    <div class="principle">
+      <div class="principle-num">01</div>
+      <div class="principle-title">Docs before code</div>
+      <div class="principle-text">Brainstorm, PRD, and folder structure all exist as documents before a single route is written.</div>
+    </div>
+    <div class="principle">
+      <div class="principle-num">02</div>
+      <div class="principle-title">Canonical, not duplicated</div>
+      <div class="principle-text">AGENTS.md is the source of truth. CLAUDE.md and GEMINI.md are three-line pointers. Never duplicate.</div>
+    </div>
+    <div class="principle">
+      <div class="principle-num">03</div>
+      <div class="principle-title">Update at the boundary</div>
+      <div class="principle-text">PROGRESS.md gets updated at the end of every session — not weeks later when memory has faded.</div>
+    </div>
+    <div class="principle">
+      <div class="principle-num">04</div>
+      <div class="principle-title">Verify, don't assume</div>
+      <div class="principle-text">VERIFY.md exists so that "it works" is observable. Every project ships with exact commands that prove it.</div>
+    </div>
+    <div class="principle">
+      <div class="principle-num">05</div>
+      <div class="principle-title">Skills earn their place</div>
+      <div class="principle-text">A skill exists when a ritual repeats with non-obvious logic. Otherwise it's premature optimization.</div>
+    </div>
+    <div class="principle">
+      <div class="principle-num">06</div>
+      <div class="principle-title">Plain English, always</div>
+      <div class="principle-text">No em dashes, no en dashes. Concise writing for senior stakeholders. Language that doesn't sound AI-generated.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>Mike's AI Projects Workflow · v1 · 2026</div>
+  <div>Built on <a href="https://github.com/mcruzae/claude-external-memory">claude-external-memory</a></div>
+</footer>
+
+</div>
+
+<script>
+  const steps = document.querySelectorAll('.step');
+  steps.forEach(step => {
+    const header = step.querySelector('.step-header');
+    header.addEventListener('click', () => {
+      step.classList.toggle('open');
+    });
+  });
+
+  document.getElementById('expandAll').addEventListener('click', () => {
+    steps.forEach(s => s.classList.add('open'));
+  });
+
+  document.getElementById('collapseAll').addEventListener('click', () => {
+    steps.forEach(s => s.classList.remove('open'));
+  });
+
+  // Open first step by default on first load
+  steps[0].classList.add('open');
+</script>
+
+</body>
+</html>
