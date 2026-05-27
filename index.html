@@ -1184,12 +1184,12 @@
 <div class="container">
 
 <header>
-  <div class="eyebrow">Personal Build System · v4.0</div>
+  <div class="eyebrow">Personal Build System · v4.1</div>
   <h1>Mike's AI Projects <span class="italic">Workflow</span></h1>
   <p class="subtitle">A repeatable system for taking a project from <em>idea</em> to <em>production</em> using AI-assisted development in VS Code (Claude, Codex, Gemini). Stack-agnostic by design.</p>
   <div class="meta">
     <span>Made by Mike Cruz</span>
-    <span>v4.0 · 2026</span>
+    <span>v4.1 · 2026</span>
     <span>Click any step to expand</span>
   </div>
 </header>
@@ -1210,7 +1210,7 @@
     <li><strong>AI assistant extensions in VS Code</strong>At least one of: Claude, Codex, or Gemini. Sign into your account inside the extension.</li>
     <li><strong>Git</strong>Pre-installed on most systems. Verify with <code class="inline">git --version</code>.</li>
     <li><strong>GitHub CLI (gh)</strong>For private repo creation in Step 3. Install via <code class="inline">brew install gh</code> or <a href="https://cli.github.com/" target="_blank" rel="noopener">cli.github.com</a>, then <code class="inline">gh auth login</code>.</li>
-    <li><strong>claude-external-memory skill</strong>Install once. <a href="https://github.com/mcruzae/claude-external-memory" target="_blank" rel="noopener">github.com/mcruzae/claude-external-memory</a></li>
+    <li><strong>External-memory skill</strong>One per AI tool you use. Install for Claude: <a href="https://github.com/mcruzae/claude-external-memory" target="_blank" rel="noopener">github.com/mcruzae/claude-external-memory</a>. Install for Codex: <a href="https://github.com/mcruzae/codex-external-memory" target="_blank" rel="noopener">github.com/mcruzae/codex-external-memory</a>. Same architecture, adapted to each tool's skill invocation.</li>
     <li><strong>Design skills (optional)</strong>front-end-design, ui-ux-pro-max, impeccable, open-design. See the UI/UX section below for sources.</li>
     <li><strong>Playwright MCP (optional)</strong>Required only if you want the ship-check ritual in Step 10 to run responsive screenshots and a11y audits.</li>
   </ul>
@@ -1418,7 +1418,7 @@ Justify each top-level folder briefly in your response.<button class="copy-btn">
       </div>
       <div class="step-body">
         <div class="step-body-inner">
-          <p>Run the <a style="color:var(--orange-deep);" href="https://github.com/mcruzae/claude-external-memory">claude-external-memory</a> skill in <code class="inline">init</code> mode. It reads the manifest files created in Step 4 and the PRD, then produces a customized AGENTS.md, PLAN.md, PROGRESS.md, and VERIFY.md — plus pointer files for CLAUDE.md and GEMINI.md.</p>
+          <p>Run the external-memory skill in <code class="inline">init</code> mode (<a style="color:var(--orange-deep);" href="https://github.com/mcruzae/claude-external-memory">Claude version</a> or <a style="color:var(--orange-deep);" href="https://github.com/mcruzae/codex-external-memory">Codex version</a> — use whichever matches the AI assistant you're invoking). It reads the manifest files created in Step 4 and the PRD, then produces a customized AGENTS.md, PLAN.md, PROGRESS.md, and VERIFY.md — plus pointer files for CLAUDE.md and GEMINI.md.</p>
 
           <div class="cmd prompt">Run external-memory skill in init mode for this repo.<button class="copy-btn">Copy</button></div>
 
@@ -2147,8 +2147,8 @@ flask run --debug
 </section>
 
 <footer>
-  <div>Mike's AI Projects Workflow · v4.0 · 2026</div>
-  <div>Built on <a href="https://github.com/mcruzae/claude-external-memory">claude-external-memory</a></div>
+  <div>Mike's AI Projects Workflow · v4.1 · 2026</div>
+  <div>Built on the external-memory skill pattern (<a href="https://github.com/mcruzae/claude-external-memory">Claude</a> · <a href="https://github.com/mcruzae/codex-external-memory">Codex</a>)</div>
 </footer>
 
 </div>
