@@ -1184,12 +1184,12 @@
 <div class="container">
 
 <header>
-  <div class="eyebrow">Personal Build System · v4.1</div>
+  <div class="eyebrow">Personal Build System · v4.2</div>
   <h1>Mike's AI Projects <span class="italic">Workflow</span></h1>
   <p class="subtitle">A repeatable system for taking a project from <em>idea</em> to <em>production</em> using AI-assisted development in VS Code (Claude, Codex, Gemini). Stack-agnostic by design.</p>
   <div class="meta">
     <span>Made by Mike Cruz</span>
-    <span>v4.1 · 2026</span>
+    <span>v4.2 · 2026</span>
     <span>Click any step to expand</span>
   </div>
 </header>
@@ -1634,10 +1634,54 @@ After creating the file, remind me to restart the session so
           <div class="sub-label">The universal deploy pieces — regardless of stack</div>
           <ul>
             <li><strong>Pre-deploy gate</strong> — ship-check must pass</li>
-            <li><strong>Environment variables</strong> — never committed. Documented in <code class="inline">docs/deploy.md</code>.</li>
+            <li><strong>Environment variables</strong> — never committed</li>
             <li><strong>Rollback command</strong> — defined and tested before you need it</li>
             <li><strong>Health check</strong> — a single command or URL that confirms the deploy worked</li>
           </ul>
+
+          <div class="sub-label">After your first successful deploy · Capture deploy.md</div>
+          <p>Once a deploy actually works, capture the operational reality in <code class="inline">docs/deploy.md</code>. Not before. The deploy.md is a <em>reference document</em>, not a deployment plan — it documents what your deployment actually is, so future-you (or anyone else) can act on it during an incident, restart, or migration. Writing it before the first deploy means writing fiction.</p>
+
+          <p>Don't write it from memory. Inspect the running deployment and generate the doc from real state.</p>
+
+          <div class="sub-label">Copy-paste prompt to generate deploy.md from reality</div>
+          <div class="cmd prompt">Generate docs/deploy.md for this project by inspecting the
+actual running deployment, not from my memory.
+
+Steps:
+
+1. Read docs/PRD.md to confirm the deployment target
+   (Hostinger VPS, Vercel, on-prem, etc.) and stack
+2. Connect to the live deployment via the appropriate MCP
+   (Hostinger MCP for VPS, gh CLI for Vercel project info,
+   etc.) and inspect:
+   - Process manager config (systemd unit file, PM2 ecosystem,
+     Vercel project settings — whichever applies)
+   - Reverse proxy config (Nginx site file, location and
+     contents, or Vercel routing)
+   - Environment variable names in use (names only — never
+     read or print actual values)
+   - Where env vars live (systemd EnvironmentFile path,
+     .env.production, Vercel dashboard, etc.)
+   - Health check endpoint and what a healthy response looks like
+   - SSL cert renewal status (certbot timer, auto-renew config)
+   - Backup location and frequency (if any)
+3. Write docs/deploy.md with these sections:
+   - Deployment target (one line)
+   - Restart command (the actual command to restart the service)
+   - Rollback command (how to revert to previous version)
+   - Health check (URL + what success looks like)
+   - Environment variables (names only, with brief purpose for
+     each, plus where they're stored)
+   - Common issues seen during this deploy and how they were fixed
+   - First-deploy walkthrough (only if useful for future migrations)
+4. Reference docs/deploy.md from AGENTS.md so future sessions
+   know it exists
+
+Never print, log, or commit actual secret values. Only names
+and storage locations.<button class="copy-btn">Copy</button></div>
+
+          <div class="callout"><strong>Living document, not a final artifact.</strong> Re-run this prompt (or just edit deploy.md directly) whenever something meaningful changes — new env var, different process manager, migrated to a different VPS. The doc earns its keep by staying accurate.</div>
         </div>
       </div>
     </div>
@@ -1961,6 +2005,63 @@ flask run --debug
       </div>
     </div>
   </div>
+
+  <div class="sample-card">
+    <div class="sample-header">
+      <div class="sample-file">docs/deploy.md</div>
+      <div class="sample-desc">Captured from reality after first successful deploy</div>
+      <div class="sample-toggle"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+    </div>
+    <div class="sample-body">
+      <div class="sample-body-inner">
+        <pre># Deploy reference · acme-internal
+
+**Target:** Hostinger VPS · Ubuntu 24.04
+**First deployed:** 2026-04-18
+**Last updated:** 2026-05-22
+
+## Restart
+sudo systemctl restart acme-internal
+
+## Rollback to previous version
+cd /opt/acme-internal
+git checkout HEAD~1
+sudo systemctl restart acme-internal
+# verify with health check below
+
+## Health check
+curl -f https://internal.acme.com/healthz
+# expects HTTP 200 with body "ok"
+
+## Environment variables
+Stored in: /etc/systemd/system/acme-internal.service.d/env.conf
+Names in use:
+- DATABASE_URL          → SQLite path under /opt/acme-internal/data/
+- SECRET_KEY            → Flask session signing
+- SMTP_RELAY_HOST       → shared mailer relay
+- ADMIN_EMAIL           → for error notifications
+
+## Reverse proxy
+File: /etc/nginx/sites-available/acme-internal
+Symlinked to: /etc/nginx/sites-enabled/acme-internal
+SSL: Let's Encrypt, auto-renewed by certbot.timer
+
+## Backups
+Daily 03:00 UTC via cron:
+/opt/acme-internal/scripts/backup-db.sh
+Output: /opt/backups/acme-internal/YYYY-MM-DD.sqlite.gz
+Retention: 30 days
+
+## Issues seen during first deploy
+- Gunicorn defaulted to 1 worker (CPU count detection failed in
+  systemd context). Fixed by setting --workers 3 explicitly in
+  the unit file.
+- Nginx initially served default site, not acme-internal. Fixed
+  by removing /etc/nginx/sites-enabled/default symlink.</pre>
+        <p class="sample-note">Good signals: written after first deploy from real state, not from memory; env var names only (no values); specific paths and file locations; common issues captured. A bad deploy.md is speculative ("we will use systemd") instead of factual ("the service file is at this path").</p>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- PRINCIPLES -->
@@ -2147,7 +2248,7 @@ flask run --debug
 </section>
 
 <footer>
-  <div>Mike's AI Projects Workflow · v4.1 · 2026</div>
+  <div>Mike's AI Projects Workflow · v4.2 · 2026</div>
   <div>Built on the external-memory skill pattern (<a href="https://github.com/mcruzae/claude-external-memory">Claude</a> · <a href="https://github.com/mcruzae/codex-external-memory">Codex</a>)</div>
 </footer>
 
