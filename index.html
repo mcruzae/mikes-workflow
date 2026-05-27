@@ -1184,12 +1184,12 @@
 <div class="container">
 
 <header>
-  <div class="eyebrow">Personal Build System · v3.6</div>
+  <div class="eyebrow">Personal Build System · v3.7</div>
   <h1>Mike's AI Projects <span class="italic">Workflow</span></h1>
   <p class="subtitle">A repeatable system for taking a project from <em>idea</em> to <em>production</em> using AI-assisted development in VS Code (Claude, Codex, Gemini). Stack-agnostic by design.</p>
   <div class="meta">
     <span>Made by Mike Cruz</span>
-    <span>v3.6 · 2026</span>
+    <span>v3.7 · 2026</span>
     <span>Click any step to expand</span>
   </div>
 </header>
@@ -1197,6 +1197,7 @@
 <div class="legend">
   <div class="legend-item"><span class="legend-dot think"></span> Think</div>
   <div class="legend-item"><span class="legend-dot scaffold"></span> Scaffold</div>
+  <div class="legend-item"><span class="legend-dot build"></span> Build</div>
   <div class="legend-item"><span class="legend-dot maintain"></span> Maintain</div>
 </div>
 
@@ -1211,7 +1212,7 @@
     <li><strong>GitHub CLI (gh)</strong>For private repo creation in Step 3. Install via <code class="inline">brew install gh</code> or <a href="https://cli.github.com/" target="_blank" rel="noopener">cli.github.com</a>, then <code class="inline">gh auth login</code>.</li>
     <li><strong>claude-external-memory skill</strong>Install once. <a href="https://github.com/mcruzae/claude-external-memory" target="_blank" rel="noopener">github.com/mcruzae/claude-external-memory</a></li>
     <li><strong>Design skills (optional)</strong>front-end-design, ui-ux-pro-max, impeccable, open-design. See the UI/UX section below for sources.</li>
-    <li><strong>Playwright MCP (optional)</strong>Required only if you want the ship-check ritual in Step 9 to run responsive screenshots and a11y audits.</li>
+    <li><strong>Playwright MCP (optional)</strong>Required only if you want the ship-check ritual in Step 10 to run responsive screenshots and a11y audits.</li>
   </ul>
 </div>
 
@@ -1447,7 +1448,7 @@ Justify each top-level folder briefly in your response.<button class="copy-btn">
           <ul>
             <li><strong>Hosting provider MCP</strong> (Hostinger, AWS, Vercel) — for VPS state, deployment, resource awareness</li>
             <li><strong>Database MCP</strong> (Postgres, SQLite) — let agents inspect schema directly if the project has one</li>
-            <li><strong>Playwright MCP</strong> — required for the ship-check ritual in Step 9 (responsive screenshots, accessibility audits)</li>
+            <li><strong>Playwright MCP</strong> — required for the ship-check ritual in Step 10 (responsive screenshots, accessibility audits)</li>
             <li><strong>GitHub MCP</strong> — for PR review and issue triage workflows</li>
           </ul>
 
@@ -1473,7 +1474,7 @@ Steps:
 After creating the file, tell me how to invoke it and remind me
 to restart the session so the command loads.<button class="copy-btn">Copy</button></div>
 
-          <div class="callout"><strong>Current commands in this workflow:</strong> only <code class="inline">/ship-check</code> so far (see Step 9 for the full prompt). Add more as you notice yourself typing the same instruction repeatedly — that's the signal a command is worth creating.</div>
+          <div class="callout"><strong>Current commands in this workflow:</strong> only <code class="inline">/ship-check</code> so far (see Step 10 for the full prompt). Add more as you notice yourself typing the same instruction repeatedly — that's the signal a command is worth creating.</div>
 
           <div class="callout"><strong>VS Code workflow note:</strong> the <code class="inline">.claude/commands/</code> folder lives in your repo and is picked up by the Claude, Codex, and Gemini VS Code extensions. Commit it to git so teammates inherit the same commands. For personal commands across all projects, use <code class="inline">~/.claude/commands/</code> instead.</div>
         </div>
@@ -1482,8 +1483,63 @@ to restart the session so the command loads.<button class="copy-btn">Copy</butto
   </div>
 
   <!-- STEP 7 -->
-  <div class="step phase-maintain">
+  <div class="step phase-build">
     <div class="step-marker">07</div>
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-title-block">
+          <div class="step-phase">Build · Loop</div>
+          <div class="step-title">Ship features in tight loops</div>
+          <div class="step-summary">Branch, build, review, merge. Repeat.</div>
+        </div>
+        <div class="step-toggle"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+      </div>
+      <div class="step-body">
+        <div class="step-body-inner">
+          <p>Building is where 80% of the time goes. The workflow's discipline here is small: one feature per branch, one review pass against AGENTS.md before merging, one PROGRESS.md update before closing the session. Repeat for every feature.</p>
+
+          <div class="sub-label">The loop</div>
+          <ul>
+            <li><strong>Branch</strong> — <code class="inline">git switch -c feat/&lt;name&gt;</code>. One feature per branch even when working solo.</li>
+            <li><strong>Build</strong> — ask the AI to implement the feature. Reference AGENTS.md conventions explicitly in the prompt.</li>
+            <li><strong>Review</strong> — before merging, ask the AI to audit the diff against AGENTS.md (use the prompt below).</li>
+            <li><strong>Merge</strong> — once review passes, merge to main with a clean commit message.</li>
+            <li><strong>Log</strong> — Step 8 captures what got done. Don't skip this.</li>
+          </ul>
+
+          <div class="sub-label">Copy-paste prompt for the review pass</div>
+          <div class="cmd prompt">Review the current branch's diff against main.
+
+For every file changed:
+
+1. Check it against AGENTS.md conventions (code style, naming,
+   folder rules, writing style for any text changes)
+2. Flag any logic that's overly complex, duplicated, or that
+   could be simpler
+3. Look for missing tests, error handling, or edge cases
+4. Check for accidental .env mentions, hardcoded secrets, or
+   credentials in code or commit messages
+5. Verify all imports are used and dependencies are needed
+
+Output a numbered list of findings. For each finding, mark it
+as MUST FIX or CONSIDER. End with a one-line verdict: SAFE TO
+MERGE or NEEDS WORK.
+
+Don't make the changes yourself — just report.<button class="copy-btn">Copy</button></div>
+
+          <div class="sub-label">Parallel work with git worktree</div>
+          <p>For larger projects, <code class="inline">git worktree</code> lets you run multiple branches simultaneously without losing context. One AI session per worktree. Useful when one feature is blocked waiting on review and you want to start the next one.</p>
+          <div class="cmd">git worktree add ../project-feat-auth feat/auth<button class="copy-btn">Copy</button></div>
+
+          <div class="callout"><strong>Resist the "just commit to main" temptation.</strong> Even solo, branching forces you to think of a feature as a discrete unit. It's what makes the review pass meaningful — without a diff, there's nothing for the AI to review.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 8 -->
+  <div class="step phase-maintain">
+    <div class="step-marker">08</div>
     <div class="step-card">
       <div class="step-header">
         <div class="step-title-block">
@@ -1507,20 +1563,15 @@ to restart the session so the command loads.<button class="copy-btn">Copy</butto
             <li>New smoke checks in VERIFY.md if endpoints or commands changed</li>
           </ul>
 
-          <div class="sub-label">Working conventions during the session</div>
-          <p>Branch per feature, even solo:</p>
-          <div class="cmd">git switch -c feat/auth<button class="copy-btn">Copy</button></div>
-          <p>Combined with <code class="inline">git worktree</code>, this lets you run parallel agent sessions on different features without context contamination.</p>
-
           <div class="callout"><strong>Cold-start payoff:</strong> when you return to this project in 3 weeks, the next session starts with full context in under 30 seconds. No re-explaining.</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- STEP 8 -->
+  <!-- STEP 9 -->
   <div class="step phase-maintain">
-    <div class="step-marker">08</div>
+    <div class="step-marker">09</div>
     <div class="step-card">
       <div class="step-header">
         <div class="step-title-block">
@@ -1549,9 +1600,9 @@ to restart the session so the command loads.<button class="copy-btn">Copy</butto
     </div>
   </div>
 
-  <!-- STEP 9 -->
+  <!-- STEP 10 -->
   <div class="step phase-maintain">
-    <div class="step-marker">09</div>
+    <div class="step-marker">10</div>
     <div class="step-card">
       <div class="step-header">
         <div class="step-title-block">
@@ -1647,7 +1698,7 @@ After creating the file, remind me to restart the session so
     <div class="design-row gate">
       <div class="design-phase">05 · Audit (gate)</div>
       <div class="design-skill"><a href="https://github.com/pbakaus/impeccable" target="_blank" rel="noopener">impeccable</a><span class="source-note">pbakaus · community</span></div>
-      <div class="design-trigger">Pre-ship design audit. Runs before every release — not occasionally. Pair with <code class="inline">/ship-check</code> from Step 9 (which audits the <em>implementation</em>). Different layers; both required.</div>
+      <div class="design-trigger">Pre-ship design audit. Runs before every release — not occasionally. Pair with <code class="inline">/ship-check</code> from Step 10 (which audits the <em>implementation</em>). Different layers; both required.</div>
     </div>
   </div>
 
@@ -1889,7 +1940,7 @@ flask run --debug
 
 ## Pre-deploy (must all pass before shipping)
 - All Pre-commit checks above
-- /ship-check  (see Step 9)
+- /ship-check  (see Step 10)
 - Manual: visit /healthz on the deployed instance and confirm 200 OK
 - Manual: log in as a test user and click through the 3 key pages
 
@@ -2113,7 +2164,7 @@ flask run --debug
 </section>
 
 <footer>
-  <div>Mike's AI Projects Workflow · v3.6 · 2026</div>
+  <div>Mike's AI Projects Workflow · v3.7 · 2026</div>
   <div>Built on <a href="https://github.com/mcruzae/claude-external-memory">claude-external-memory</a></div>
 </footer>
 
