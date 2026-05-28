@@ -1184,12 +1184,12 @@
 <div class="container">
 
 <header>
-  <div class="eyebrow">Personal Build System · v4.3</div>
+  <div class="eyebrow">Personal Build System · v4.4</div>
   <h1>Mike's AI Projects <span class="italic">Workflow</span></h1>
   <p class="subtitle">A repeatable system for taking a project from <em>idea</em> to <em>production</em> using AI-assisted development in VS Code (Claude, Codex, Gemini). Opinionated defaults, reasoned exceptions.</p>
   <div class="meta">
     <span>Made by Mike Cruz</span>
-    <span>v4.3 · 2026</span>
+    <span>v4.4 · 2026</span>
     <span>Click any step to expand</span>
   </div>
 </header>
@@ -1700,6 +1700,39 @@ Never print, log, or commit actual secret values. Only names
 and storage locations.<button class="copy-btn">Copy</button></div>
 
           <div class="callout"><strong>Living document, not a final artifact.</strong> Re-run this prompt (or just edit deploy.md directly) whenever something meaningful changes — new env var, different process manager, migrated to a different VPS. The doc earns its keep by staying accurate.</div>
+
+          <div class="sub-label">Public sites only · SEO + GEO pass before launch</div>
+          <p>For public-facing sites, optimize for both traditional search (SEO) and AI answer engines (GEO — getting cited by ChatGPT, Perplexity, Gemini, Google AI Overviews). The two overlap heavily and Next.js gives you most of the foundation, but a few specific additions close the gap. Internal tools skip this entirely.</p>
+
+          <div class="sub-label">Copy-paste prompt for the SEO + GEO pass</div>
+          <div class="cmd prompt">Run an SEO and GEO optimization pass on this public site.
+
+SEO foundations (verify these exist):
+1. Server-side rendered content (not hidden behind JS)
+2. Per-page metadata (title, description, Open Graph, Twitter)
+3. Sitemap.xml generated and referenced in robots.txt
+4. Clean heading hierarchy (one H1 per page, logical H2/H3)
+5. Fast load (check Lighthouse performance from ship-check)
+
+GEO additions (for AI answer-engine visibility):
+6. robots.txt — explicitly ALLOW AI crawlers: GPTBot,
+   ClaudeBot, PerplexityBot, Google-Extended. Blocking them
+   means zero visibility in AI answers.
+7. Create an llms.txt at the site root — a curated, plain-text
+   index of the site's most important pages and what they're
+   about, so AI systems can interpret the site.
+8. Schema markup (JSON-LD): Organization, Product, FAQ, and
+   Breadcrumb where they apply. Helps AI parse what content is.
+9. Content structure — lead each section with a direct answer,
+   then context. AI engines extract question-answer passages.
+10. "Last updated" timestamps on content pages — AI engines
+    weight recency when choosing what to cite.
+
+Report what's already in place, what's missing, and make the
+changes. Then list any content-level recommendations (FAQ
+sections, clearer answers) I should write myself.<button class="copy-btn">Copy</button></div>
+
+          <div class="callout"><strong>SEO and GEO are now a pair, not a sequence.</strong> A growing share of product research happens through AI assistants rather than search engines. For a public site, being the source an AI cites when someone asks "what's a good X" is real traffic. The technical work mostly overlaps with SEO, so doing both is a small addition, not a separate project.</div>
         </div>
       </div>
     </div>
@@ -1799,7 +1832,7 @@ Public website      → "Premium modern, generous whitespace, editorial type"<bu
       <div class="stack-why">
         <div class="stack-why-label">Why this stack</div>
         <ul>
-          <li><strong>SEO is first-class.</strong> Server-side rendering, metadata APIs, sitemap generation — public sites need this and Next.js delivers it out of the box.</li>
+          <li><strong>SEO and GEO ready.</strong> Server-side rendering, metadata APIs, sitemap generation, and clean semantic HTML serve both traditional search ranking and getting cited by AI answer engines (ChatGPT, Perplexity, Gemini). Next.js delivers the foundation out of the box.</li>
           <li><strong>Built for public traffic.</strong> Edge rendering, ISR, image optimization, automatic code splitting. Performs well under real load without manual tuning.</li>
           <li><strong>Postgres handles real scale.</strong> Concurrent writes, full-text search, JSON queries, replication. SQLite serializes writes and falls over at scale.</li>
           <li><strong>Type safety end-to-end.</strong> TypeScript from the database (via Prisma/Drizzle) through the UI catches whole classes of bugs at compile time. Pays off as the codebase grows.</li>
@@ -2212,6 +2245,14 @@ Retention: 30 days
         <dd>A library that lets you query a database using your programming language instead of raw SQL. Prisma and Drizzle are the two common choices for TypeScript projects.</dd>
       </dl>
       <dl class="glossary-term">
+        <dt>SEO / GEO</dt>
+        <dd>SEO (Search Engine Optimization) optimizes a site to rank in traditional search results. GEO (Generative Engine Optimization) optimizes it to be cited by AI answer engines like ChatGPT, Perplexity, and Gemini. They overlap heavily — both reward clean structure, server-side rendering, and factual content — but GEO adds tactics like <code>llms.txt</code>, allowing AI crawlers, and question-answer content structure.</dd>
+      </dl>
+      <dl class="glossary-term">
+        <dt>llms.txt</dt>
+        <dd>An emerging convention — a plain-text file at a site's root (like robots.txt, but for AI) that gives AI systems a curated index of the site's most important content and what it's about. A low-effort GEO addition.</dd>
+      </dl>
+      <dl class="glossary-term">
         <dt>ISR (Incremental Static Regeneration)</dt>
         <dd>A Next.js feature that serves pre-rendered pages but refreshes them in the background on a schedule. Gives static-site speed with fresh content.</dd>
       </dl>
@@ -2266,7 +2307,7 @@ Retention: 30 days
 </section>
 
 <footer>
-  <div>Mike's AI Projects Workflow · v4.3 · 2026</div>
+  <div>Mike's AI Projects Workflow · v4.4 · 2026</div>
   <div>Built on the external-memory skill pattern (<a href="https://github.com/mcruzae/claude-external-memory">Claude</a> · <a href="https://github.com/mcruzae/codex-external-memory">Codex</a>)</div>
 </footer>
 
