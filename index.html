@@ -4,17 +4,17 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Mike's AI Projects Workflow</title>
-<meta name="description" content="A repeatable system for taking a project from idea to production using AI-assisted development in VS Code. Stack-agnostic by design." />
+<meta name="description" content="A repeatable system for taking a project from idea to production using AI-assisted development in VS Code. Opinionated defaults, reasoned exceptions." />
 <meta name="author" content="Mike Cruz" />
 
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Mike's AI Projects Workflow" />
-<meta property="og:description" content="A repeatable system for taking a project from idea to production using AI-assisted development in VS Code. Stack-agnostic by design." />
+<meta property="og:description" content="A repeatable system for taking a project from idea to production using AI-assisted development in VS Code. Opinionated defaults, reasoned exceptions." />
 <meta property="og:url" content="https://mcruzae.github.io/mikes-workflow/" />
 
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="Mike's AI Projects Workflow" />
-<meta name="twitter:description" content="A repeatable system for taking a project from idea to production using AI-assisted development. Stack-agnostic by design." />
+<meta name="twitter:description" content="A repeatable system for taking a project from idea to production using AI-assisted development. Opinionated defaults, reasoned exceptions." />
 
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23f4f0e8'/%3E%3Ctext x='50' y='72' font-family='Georgia,serif' font-size='64' font-style='italic' font-weight='500' text-anchor='middle' fill='%23d97757'%3EM%3C/text%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -1184,12 +1184,12 @@
 <div class="container">
 
 <header>
-  <div class="eyebrow">Personal Build System · v4.2</div>
+  <div class="eyebrow">Personal Build System · v4.3</div>
   <h1>Mike's AI Projects <span class="italic">Workflow</span></h1>
-  <p class="subtitle">A repeatable system for taking a project from <em>idea</em> to <em>production</em> using AI-assisted development in VS Code (Claude, Codex, Gemini). Stack-agnostic by design.</p>
+  <p class="subtitle">A repeatable system for taking a project from <em>idea</em> to <em>production</em> using AI-assisted development in VS Code (Claude, Codex, Gemini). Opinionated defaults, reasoned exceptions.</p>
   <div class="meta">
     <span>Made by Mike Cruz</span>
-    <span>v4.2 · 2026</span>
+    <span>v4.3 · 2026</span>
     <span>Click any step to expand</span>
   </div>
 </header>
@@ -1253,7 +1253,7 @@
 Don't write code or create folders yet. Just think out loud.
 Save the output as docs/brainstorm.md.<button class="copy-btn">Copy</button></div>
 
-          <div class="callout"><strong>Why this matters:</strong> the stack question gets seeded in Step 1 but not <em>decided</em> until Step 2. This forces the LLM (and you) to consider real alternatives instead of reaching for the familiar one.</div>
+          <div class="callout"><strong>Why this matters:</strong> Step 1 is the one place to explore stacks freely — consider real alternatives without anchoring. That's deliberate: Step 2 will pull the decision back to your proven defaults, so the brainstorm is where any genuine "should this be something different?" thinking belongs. Explore here; commit there.</div>
 
           <div class="callout"><strong>brainstorm.md is ephemeral.</strong> Once Step 2 produces the PRD, the brainstorm has done its job. It's not load-bearing — nothing downstream reads from it. Keep it in <code class="inline">docs/</code> for the historical record, but don't maintain it.</div>
         </div>
@@ -1275,7 +1275,7 @@ Save the output as docs/brainstorm.md.<button class="copy-btn">Copy</button></di
       </div>
       <div class="step-body">
         <div class="step-body-inner">
-          <p>Ask the LLM to translate the brainstorm into a structured PRD. Two sections matter most: <strong>Tech Stack</strong> (commits the framework) and <strong>Design Language</strong> (commits the aesthetic direction). Both decisions ripple through everything that follows.</p>
+          <p>Ask the LLM to translate the brainstorm into a structured PRD. Two sections matter most: <strong>Tech Stack</strong> (starts from your defaults, deviates only with justification) and <strong>Design Language</strong> (commits the aesthetic direction). Both decisions ripple through everything that follows.</p>
 
           <div class="sub-label">Sample prompt</div>
           <div class="cmd prompt">Read docs/brainstorm.md and produce a PRD in docs/PRD.md
@@ -1287,24 +1287,42 @@ with these sections:
 - Non-goals (what's explicitly out)
 - Success Criteria (observable, not aspirational)
 - Deployment Target
-- Tech Stack (with reasoning over alternatives)
+- Tech Stack (see the default policy below)
 - Design Language (brutalist, Apple-like, editorial, Bloomberg/
   Vision Pro premium dark, etc. — name the aesthetic and give
   3 reference adjectives)
 - Tech Constraints (auth pattern, data residency, etc.)
 
+For the Tech Stack section, start from my standard defaults:
+- Internal tools: Python + Flask + SQLite, deployed on VPS with
+  Gunicorn, Nginx, systemd.
+- Public / external websites: Next.js + TypeScript + Postgres,
+  with strong SEO and scalable hosting.
+
+Do not choose freely. First evaluate whether the default fits.
+- If it fits: recommend the default with a brief confirmation.
+  Don't re-argue it.
+- If it doesn't: recommend an alternative and clearly state
+  (1) which requirement breaks the default, (2) why the
+  alternative is better, (3) what extra complexity it adds, and
+  (4) whether the benefit is worth that complexity. For "more
+  scale" on an internal tool, the first move is SQLite to
+  Postgres, not a full rewrite.
+
 The Tech Stack and Design Language sections are commit points.
-Propose specifics with reasoning. Flag any decisions I should
-weigh in on. Keep the whole PRD under 2 pages.<button class="copy-btn">Copy</button></div>
+Flag any decisions I should weigh in on. Keep the PRD under
+2 pages.<button class="copy-btn">Copy</button></div>
+
+          <div class="callout"><strong>Stack-agnostic while brainstorming, opinionated by the PRD.</strong> Step 1 explores freely. Step 2 anchors to the proven defaults and makes the LLM defend any deviation. This keeps you in the LLM's peak-fluency zone, preserves operational uniformity across projects, and stops the model from reaching for Supabase, Redis, and microservices when a Flask app on your VPS is the right answer.</div>
 
           <div class="callout"><strong>Why design language belongs here:</strong> deciding the aesthetic early gives every design skill in the UI/UX section below a clear reference to work from, instead of starting from "make it look good" each time.</div>
 
           <div class="sub-label">When to push back on the stack proposal</div>
           <ul>
-            <li>The reasoning is thin or hand-wavy</li>
-            <li>The choice optimizes for the LLM's familiarity rather than the project's needs</li>
-            <li>The stack is over-engineered for the scope</li>
-            <li>Deployment target and stack don't match</li>
+            <li>It deviates from the default without a specific, defended reason</li>
+            <li>The deviation reasoning is thin or hand-wavy</li>
+            <li>The stack is over-engineered for the scope (queues, microservices, auth providers a small tool doesn't need)</li>
+            <li>It jumps straight to a rewrite when a SQLite to Postgres upgrade would do</li>
           </ul>
 
           <div class="callout"><strong>Amend the PRD when reality contradicts it.</strong> Mid-build, you'll learn things that change the scope, the stack, or the design language. When that happens, edit the PRD and add a one-line note explaining why. A stale PRD becomes a lie — and the whole workflow's discipline is about not trusting stale docs. The PRD doesn't get a pass.</div>
@@ -2073,8 +2091,8 @@ Retention: 30 days
   <div class="principles-grid">
     <div class="principle">
       <div class="principle-num">01</div>
-      <div class="principle-title">Stack is an output, not an input</div>
-      <div class="principle-text">The PRD decides the stack based on the project's real requirements. The workflow doesn't favor any framework.</div>
+      <div class="principle-title">Stack-agnostic while brainstorming, opinionated by the PRD</div>
+      <div class="principle-text">Step 1 explores stacks freely. Step 2 anchors to proven defaults (Flask for internal, Next.js for public) and makes any deviation earn its place with a specific, defended reason.</div>
     </div>
     <div class="principle">
       <div class="principle-num">02</div>
@@ -2248,7 +2266,7 @@ Retention: 30 days
 </section>
 
 <footer>
-  <div>Mike's AI Projects Workflow · v4.2 · 2026</div>
+  <div>Mike's AI Projects Workflow · v4.3 · 2026</div>
   <div>Built on the external-memory skill pattern (<a href="https://github.com/mcruzae/claude-external-memory">Claude</a> · <a href="https://github.com/mcruzae/codex-external-memory">Codex</a>)</div>
 </footer>
 
