@@ -1137,12 +1137,12 @@
 <div class="container">
 
 <header>
-  <div class="eyebrow">Personal Build System · v4.7</div>
+  <div class="eyebrow">Personal Build System · v4.8</div>
   <h1>Mike's AI Projects <span class="italic">Workflow</span></h1>
   <p class="subtitle">A repeatable system for taking a project from <em>idea</em> to <em>production</em> using AI-assisted development in VS Code (Claude, Codex, Gemini). Opinionated defaults, reasoned exceptions.</p>
   <div class="meta">
     <span>Made by Mike Cruz</span>
-    <span>v4.7 · 2026</span>
+    <span>v4.8 · 2026</span>
     <span>Click any step to expand</span>
   </div>
 </header>
@@ -1264,8 +1264,11 @@ Do not choose freely. First evaluate whether the default fits.
   Postgres, not a full rewrite.
 
 The Tech Stack and Design Language sections are commit points.
-Flag any decisions I should weigh in on. Keep the PRD under
-2 pages.<button class="copy-btn">Copy</button></div>
+Flag any decisions I should weigh in on. Keep the PRD concise:
+aim for 1-2 pages for small or internal tools, but allow more
+detail for public websites, compliance-heavy projects, or
+multi-phase builds. Length should come from more decisions, not
+more prose — every section is a decision, not thinking-out-loud.<button class="copy-btn">Copy</button></div>
 
           <div class="callout"><strong>Stack-agnostic while brainstorming, opinionated by the PRD.</strong> Step 1 explores freely. Step 2 anchors to the proven defaults and makes the LLM defend any deviation. This keeps you in the LLM's peak-fluency zone, preserves operational uniformity across projects, and stops the model from reaching for Supabase, Redis, and microservices when a Flask app on your VPS is the right answer.</div>
 
@@ -1768,7 +1771,7 @@ Public website      → "Premium modern, generous whitespace, editorial type"<bu
         <div class="stack-why-label">Why this stack</div>
         <ul>
           <li><strong>Simpler mental model.</strong> One language, one process, one file for the database. No build step, no hydration, no client/server split.</li>
-          <li><strong>SQLite is enough.</strong> Internal tools rarely exceed 100 concurrent users. SQLite handles that easily, no separate database service to install, secure, or back up. Backup is a file copy.</li>
+          <li><strong>SQLite is enough.</strong> Internal tools rarely exceed 100 concurrent users, and writes are usually modest. SQLite handles that well when the app runs as a single instance. No separate database service to install, secure, or back up. Backup is a file copy.</li>
           <li><strong>Faster to v1.</strong> Empty repo to deployed in a couple of hours. No auth setup, no ORM config, no deployment dashboard.</li>
           <li><strong>Cheap to run.</strong> Runs comfortably on a low-tier VPS. No managed-database monthly bill.</li>
           <li><strong>Easy to debug.</strong> Python tracebacks point at the actual problem. No "is it server or client?" confusion.</li>
@@ -2267,7 +2270,7 @@ Retention: 30 days
 </section>
 
 <footer>
-  <div>Mike's AI Projects Workflow · v4.7 · 2026</div>
+  <div>Mike's AI Projects Workflow · v4.8 · 2026</div>
   <div>Built on the external-memory skill pattern (<a href="https://github.com/mcruzae/claude-external-memory">Claude</a> · <a href="https://github.com/mcruzae/codex-external-memory">Codex</a>)</div>
 </footer>
 
