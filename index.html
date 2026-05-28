@@ -134,49 +134,6 @@
     opacity: 0.4;
   }
 
-  .stance {
-    background: linear-gradient(135deg, var(--ink) 0%, var(--ink-soft) 100%);
-    color: var(--cream);
-    padding: 32px 36px;
-    border-radius: 16px;
-    margin-bottom: 48px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .stance::before {
-    content: "";
-    position: absolute;
-    top: -40px;
-    right: -40px;
-    width: 200px;
-    height: 200px;
-    background: radial-gradient(circle, rgba(217, 119, 87, 0.18) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .stance-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--orange-soft);
-    margin-bottom: 12px;
-    position: relative;
-  }
-
-  .stance-text {
-    font-family: 'Fraunces', serif;
-    font-weight: 400;
-    font-size: 20px;
-    line-height: 1.45;
-    color: var(--cream);
-    position: relative;
-    max-width: 720px;
-  }
-
-  .stance-text em { color: var(--orange-soft); font-style: italic; }
-
   .legend {
     display: flex;
     gap: 16px;
@@ -1165,8 +1122,6 @@
     h1 { font-size: 44px; }
     .legend { padding: 16px; gap: 12px; }
     .legend-item { font-size: 12px; }
-    .stance { padding: 24px; }
-    .stance-text { font-size: 17px; }
   }
 
   @media print {
@@ -1175,8 +1130,6 @@
     .controls, .step-toggle, .copy-btn { display: none; }
     .step-body { max-height: none !important; }
     .step-card { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
-    .stance { background: #f0f0f0; color: #1a1a1a; }
-    .stance-text { color: #1a1a1a; }
   }
 </style>
 </head>
@@ -1184,12 +1137,12 @@
 <div class="container">
 
 <header>
-  <div class="eyebrow">Personal Build System · v4.5</div>
+  <div class="eyebrow">Personal Build System · v4.7</div>
   <h1>Mike's AI Projects <span class="italic">Workflow</span></h1>
   <p class="subtitle">A repeatable system for taking a project from <em>idea</em> to <em>production</em> using AI-assisted development in VS Code (Claude, Codex, Gemini). Opinionated defaults, reasoned exceptions.</p>
   <div class="meta">
     <span>Made by Mike Cruz</span>
-    <span>v4.5 · 2026</span>
+    <span>v4.7 · 2026</span>
     <span>Click any step to expand</span>
   </div>
 </header>
@@ -1716,9 +1669,15 @@ SEO foundations (verify these exist):
 5. Fast load (check Lighthouse performance from ship-check)
 
 GEO additions (for AI answer-engine visibility):
-6. robots.txt — explicitly ALLOW AI crawlers: GPTBot,
-   ClaudeBot, PerplexityBot, Google-Extended. Blocking them
-   means zero visibility in AI answers.
+6. robots.txt — review AI crawler policy intentionally. For
+   public marketing and product pages, allow AI crawlers
+   (GPTBot, ClaudeBot, PerplexityBot, Google-Extended) unless
+   legal, brand, or regional policy says otherwise. For private,
+   partner-only, or restricted content, block them. Note that
+   Google-Extended is a policy choice about AI training and
+   grounding, not just an SEO setting. Blocking the others can
+   reduce the chance of being discovered, refreshed, or cited
+   by AI systems.
 7. Create an llms.txt at the site root — a curated, plain-text
    index of the site's most important pages and what they're
    about, so AI systems can interpret the site.
@@ -1789,7 +1748,7 @@ Public website      → "Premium modern, generous whitespace, editorial type"<bu
 <section class="reference">
   <div class="section-header">
     <div class="section-title">Reference stacks</div>
-    <p class="section-sub">Examples of what the workflow has produced — not defaults. Each project gets its own stack decision in the PRD.</p>
+    <p class="section-sub">Your proven defaults. Step 2 starts from these and deviates only with a justified reason. The full picture of each stack, with the reasoning behind it.</p>
   </div>
   <div class="stack-grid">
 
@@ -1820,7 +1779,7 @@ Public website      → "Premium modern, generous whitespace, editorial type"<bu
 
     <div class="stack-card">
       <div class="stack-name">Public web app</div>
-      <div class="stack-use">Marketing sites, content-heavy apps, SEO-driven projects</div>
+      <div class="stack-use">Marketing sites, content-heavy apps, SEO and GEO-driven projects</div>
       <div class="stack-row"><span class="stack-row-label">Language</span><span class="stack-row-val">TypeScript</span></div>
       <div class="stack-row"><span class="stack-row-label">Framework</span><span class="stack-row-val">Next.js</span></div>
       <div class="stack-row"><span class="stack-row-label">Database</span><span class="stack-row-val">Postgres</span></div>
@@ -1835,7 +1794,7 @@ Public website      → "Premium modern, generous whitespace, editorial type"<bu
         <ul>
           <li><strong>SEO and GEO ready.</strong> Server-side rendering, metadata APIs, sitemap generation, and clean semantic HTML serve both traditional search ranking and getting cited by AI answer engines (ChatGPT, Perplexity, Gemini). Next.js delivers the foundation out of the box.</li>
           <li><strong>Built for public traffic.</strong> Edge rendering, ISR, image optimization, automatic code splitting. Performs well under real load without manual tuning.</li>
-          <li><strong>Postgres handles real scale.</strong> Concurrent writes, full-text search, JSON queries, replication. SQLite serializes writes and falls over at scale.</li>
+          <li><strong>Postgres handles real scale.</strong> Concurrent writes, full-text search, JSON queries, replication. SQLite serializes writes and becomes the wrong fit once concurrent writes, replication, or multi-instance deployment matter.</li>
           <li><strong>Type safety end-to-end.</strong> TypeScript from the database (via Prisma/Drizzle) through the UI catches whole classes of bugs at compile time. Pays off as the codebase grows.</li>
           <li><strong>Rich UI ceiling.</strong> React beats server-rendered templates when the interface needs to be highly interactive — real-time updates, complex forms, drag-and-drop.</li>
           <li><strong>CDN-friendly.</strong> Designed for global edge deployment. Critical when users span multiple regions.</li>
@@ -2308,7 +2267,7 @@ Retention: 30 days
 </section>
 
 <footer>
-  <div>Mike's AI Projects Workflow · v4.5 · 2026</div>
+  <div>Mike's AI Projects Workflow · v4.7 · 2026</div>
   <div>Built on the external-memory skill pattern (<a href="https://github.com/mcruzae/claude-external-memory">Claude</a> · <a href="https://github.com/mcruzae/codex-external-memory">Codex</a>)</div>
 </footer>
 
